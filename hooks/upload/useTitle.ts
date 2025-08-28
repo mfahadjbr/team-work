@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
-import useAuth from './useAuth'
-import { useToast } from './use-toast'
+import useAuth from '../auth/useAuth'
+import { useToast } from '@/components/ui/use-toast'
 
 const API_BASE_URL = 'http://localhost:8000'
 

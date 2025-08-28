@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import useYouTubeCredentials from './useYouTubeCredentials'
-import useAuth from './useAuth'
+import useAuth from '../auth/useAuth'
 
 export interface YouTubeCredentialGuardOptions {
   redirectTo?: string
@@ -79,7 +79,7 @@ export default function useYouTubeCredentialGuard(options: YouTubeCredentialGuar
         isAuthenticated,
         hasCredentials,
         isChecking,
-        hasCredentials,
+        credentials,
         credentialsError,
         redirectTo
       })

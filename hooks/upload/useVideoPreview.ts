@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
-import useAuth from './useAuth'
+import useAuth from '../auth/useAuth'
 
 export interface VideoData {
   id: string

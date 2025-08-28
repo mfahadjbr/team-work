@@ -104,17 +104,7 @@ export function TimestampsSection({
           </div>
         )}
 
-        <div className="space-y-2">
-          <Label htmlFor="custom-timestamps">Or write custom timestamps:</Label>
-          <Textarea
-            id="custom-timestamps"
-            placeholder="0:00 Introduction&#10;2:30 Main Content&#10;5:45 Conclusion"
-            value={customTimestamps}
-            onChange={(e) => setCustomTimestamps(e.target.value)}
-            rows={6}
-            className="resize-none"
-          />
-        </div>
+        
 
         {(state.content.timestamps || generatedTimestamps || customTimestamps) && (
           <Button 
