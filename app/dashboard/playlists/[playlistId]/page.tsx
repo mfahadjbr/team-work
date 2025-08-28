@@ -222,81 +222,78 @@ export default function PlaylistVideosPage() {
           />
         </div>
       </div>
-
       {/* Playlist Overview */}
-      <Card className="border-2 border-primary/20">
+      <Card className="border-2 border-primary/20 bg-gradient-to-br from-green-50 to-white">
         <CardContent className="p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold" style={{ color: "#00C951" }}>Playlist Overview</h2>
-                <p className="text-muted-foreground mt-2">ID: {data.playlist_info.playlist_id}</p>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <Card>
+          <div className="space-y-6">
+            {/* Stats Cards */}
+            <div>
+              <h2 className="text-xl font-bold text-green-600 mb-4">Playlist Overview</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Eye className="w-4 h-4 text-muted-foreground" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-gray-600">
+                      <Eye className="w-4 h-4 text-green-600" />
                       Total Views
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{analytics.total_views.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.total_views.toLocaleString()}</div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <ThumbsUp className="w-4 h-4 text-muted-foreground" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-gray-600">
+                      <ThumbsUp className="w-4 h-4 text-blue-600" />
                       Total Likes
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{analytics.total_likes.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.total_likes.toLocaleString()}</div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 text-muted-foreground" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-gray-600">
+                      <MessageCircle className="w-4 h-4 text-purple-600" />
                       Comments
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{analytics.total_comments.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.total_comments.toLocaleString()}</div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Video className="w-4 h-4 text-muted-foreground" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-gray-600">
+                      <Video className="w-4 h-4 text-orange-600" />
                       Videos
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{analytics.total_videos}</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.total_videos}</div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-muted-foreground" />
+                    <CardTitle className="text-sm flex items-center gap-2 text-gray-600">
+                      <Clock className="w-4 h-4 text-gray-700" />
                       Watch time (hrs)
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{analytics.total_watch_time_hours.toFixed(2)}</div>
+                    <div className="text-2xl font-bold text-gray-900">{analytics.total_watch_time_hours.toFixed(2)}</div>
                   </CardContent>
                 </Card>
               </div>
             </div>
 
-            <div className="space-y-4">
+            {/* Health and Growth Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Playlist Health */}
               <Card>
                 <CardHeader className="pb-3">
