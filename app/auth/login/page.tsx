@@ -33,8 +33,8 @@ export default function LoginPage() {
         password,
       })
 
-      // Redirect to YouTube connect page after successful login
-      router.push("/auth/youtube-connect")
+      // Redirect to credential page after successful login
+      router.push("/auth/credential")
     } catch (err: any) {
       setError(err.message || "Login failed. Please check your credentials.")
     } finally {

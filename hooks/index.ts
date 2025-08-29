@@ -12,6 +12,7 @@ export { useChannelPlaylists } from './dashboard/playlists/useChannelPlaylists'
 
 // YouTube API hooks
 export { default as useYouTubeCredentials } from './youtube/useYouTubeCredentials'
+export { default as useCreateYouTubeCredentials } from './youtube/useCreateYouTubeCredentials'
 export { default as useYouTubeCredentialGuard } from './youtube/useYouTubeCredentialGuard'
 export { default as useYouTubeUpload } from './youtube/useYouTubeUpload'
 
