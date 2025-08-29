@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
+import { asNumber, safeFormatDate, safeFormatDuration, getSafePerformanceColor, getSafeEngagementColor } from "@/lib/utils"
 
 interface VideosListProps {
   videos: VideoData[]
@@ -31,45 +32,7 @@ export default function VideosList({ videos, viewMode }: VideosListProps) {
     }
   }
 
-  const getPerformanceColor = (score: number) => {
-    if (score >= 80) return "text-green-600 bg-green-100 border-green-200"
-    if (score >= 60) return "text-blue-600 bg-blue-100 border-blue-200"
-    if (score >= 40) return "text-yellow-600 bg-yellow-100 border-yellow-200"
-    if (score >= 20) return "text-orange-600 bg-orange-100 border-orange-200"
-    return "text-red-600 bg-red-100 border-red-200"
-  }
-
-  const getEngagementColor = (rate: number) => {
-    if (rate >= 10) return "text-green-600 bg-green-100 border-green-200"
-    if (rate >= 5) return "text-blue-600 bg-blue-100 border-blue-200"
-    if (rate >= 2) return "text-yellow-600 bg-yellow-100 border-yellow-200"
-    return "text-red-600 bg-red-100 border-red-200"
-  }
-
-  const formatDuration = (duration: string) => {
-    if (!duration || duration === "PT0S") return "0:00"
-    
-    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
-    if (!match) return duration
-    
-    const hours = parseInt(match[1] || "0")
-    const minutes = parseInt(match[2] || "0")
-    const seconds = parseInt(match[3] || "0")
-    
-    if (hours > 0) {
-      return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-    }
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric'
-    })
-  }
+  // Using utility functions from lib/utils.ts
 
   if (viewMode === "grid") {
     return (
@@ -95,7 +58,7 @@ export default function VideosList({ videos, viewMode }: VideosListProps) {
                   className="w-full lg:w-48 h-32 lg:h-28 object-cover rounded-lg"
                 />
                 <div className="absolute bottom-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs">
-                  {formatDuration(video.duration)}
+                  {safeFormatDuration(video.duration)}
                 </div>
                 <div className="absolute top-2 left-2">
                   <Badge variant="secondary" className="flex items-center gap-1 text-xs">
@@ -148,40 +111,40 @@ export default function VideosList({ videos, viewMode }: VideosListProps) {
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 mb-1">
                       <Eye className="h-3 w-3 text-blue-500" />
-                      <span className="font-medium text-sm">{video.view_count.toLocaleString()}</span>
+                      <span className="font-medium text-sm">{asNumber(video.view_count).toLocaleString()}</span>
                     </div>
                     <div className="text-xs text-muted-foreground">Views</div>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 mb-1">
                       <ThumbsUp className="h-3 w-3 text-green-500" />
-                      <span className="font-medium text-sm">{video.like_count}</span>
+                      <span className="font-medium text-sm">{asNumber(video.like_count)}</span>
                     </div>
                     <div className="text-xs text-muted-foreground">Likes</div>
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 mb-1">
                       <MessageCircle className="h-3 w-3 text-purple-500" />
-                      <span className="font-medium text-sm">{video.comment_count}</span>
+                      <span className="font-medium text-sm">{asNumber(video.comment_count)}</span>
                     </div>
                     <div className="text-xs text-muted-foreground">Comments</div>
                   </div>
                   <div className="text-center">
-                    <Badge className={`${getPerformanceColor(video.performance_score)} text-xs`}>
-                      {video.performance_score.toFixed(1)}
+                    <Badge className={`${getSafePerformanceColor(video.performance_score)} text-xs`}>
+                      {asNumber(video.performance_score).toFixed(1)}
                     </Badge>
                     <div className="text-xs text-muted-foreground mt-1">Performance</div>
                   </div>
                   <div className="text-center">
-                    <Badge className={`${getEngagementColor(video.engagement_rate)} text-xs`}>
-                      {video.engagement_rate.toFixed(1)}%
+                    <Badge className={`${getSafeEngagementColor(video.engagement_rate)} text-xs`}>
+                      {asNumber(video.engagement_rate).toFixed(1)}%
                     </Badge>
                     <div className="text-xs text-muted-foreground mt-1">Engagement</div>
                   </div>
                   <div className="text-center col-span-2 sm:col-span-1">
                     <div className="text-xs text-muted-foreground">
-                      <div>Published {formatDate(video.published_at)}</div>
-                      <div className="mt-1">{video.days_since_published} days ago</div>
+                      <div>Published {safeFormatDate(video.published_at)}</div>
+                      <div className="mt-1">{asNumber(video.days_since_published)} days ago</div>
                     </div>
                   </div>
                 </div>

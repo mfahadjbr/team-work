@@ -3,7 +3,12 @@ import axios from 'axios'
 import useAuth from '../auth/useAuth'
 import { useToast } from '@/components/ui/use-toast'
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'
+
+// Validate API base URL
+if (!API_BASE_URL) {
+  console.error('[Title] Error: API_BASE_URL is not defined')
+}
 
 export interface TitleGenerateResponse {
   video_id: string
@@ -42,13 +47,63 @@ export default function useTitle() {
       accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    timeout: 30000, // 30 second timeout
   })
+
+  // Add request interceptor for debugging
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      console.log('[Title] Request Interceptor:', {
+        method: config.method?.toUpperCase(),
+        url: config.url,
+        baseURL: config.baseURL,
+        hasAuth: !!(config.headers as any)?.Authorization,
+        timeout: config.timeout,
+      })
+      return config
+    },
+    (error) => {
+      console.error('[Title] Request Interceptor Error:', error)
+      return Promise.reject(error)
+    }
+  )
+
+  // Add response interceptor for debugging
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      console.log('[Title] Response Interceptor:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: response.config.url,
+        dataKeys: Object.keys(response.data || {}),
+      })
+      return response
+    },
+    (error) => {
+      console.error('[Title] Response Interceptor Error:', {
+        isAxiosError: axios.isAxiosError(error),
+        message: error?.message,
+        status: error?.response?.status,
+        statusText: error?.response?.statusText,
+        url: error?.config?.url,
+        data: error?.response?.data,
+      })
+      return Promise.reject(error)
+    }
+  )
 
   const generateTitles = useCallback(async (videoId: string): Promise<TitleGenerateResponse | undefined> => {
     if (!videoId) {
       const errorMsg = 'Video ID is required'
       setError(errorMsg)
       toast({ title: 'Missing Video ID', description: errorMsg })
+      return
+    }
+
+    if (!API_BASE_URL) {
+      const errorMsg = 'API configuration error. Please check your environment settings.'
+      setError(errorMsg)
+      toast({ title: 'Configuration Error', description: errorMsg })
       return
     }
 
@@ -90,13 +145,22 @@ export default function useTitle() {
     } catch (error: any) {
       let errorMessage = 'Failed to generate titles'
       
+      // Log the full error object for debugging
+      console.error('[Title][Generate] Full Error Object:', error)
+      console.error('[Title][Generate] Error Type:', typeof error)
+      console.error('[Title][Generate] Error Constructor:', error?.constructor?.name)
+      
       if (axios.isAxiosError(error)) {
-        console.error('[Title][Generate] Error', {
+        console.error('[Title][Generate] Axios Error Details:', {
           status: error.response?.status,
           statusText: error.response?.statusText,
           url: error.config?.url,
           data: error.response?.data,
           message: error.message,
+          code: error.code,
+          isAxiosError: error.isAxiosError,
+          responseHeaders: error.response?.headers,
+          requestHeaders: error.request?.headers,
         })
 
         if (error.response?.status === 401) {
@@ -113,8 +177,25 @@ export default function useTitle() {
           errorMessage = `Request failed: ${error.response?.status} ${error.response?.statusText}`
         }
       } else {
-        console.error('[Title][Generate] Error (non-axios)', error)
-        errorMessage = error.message || 'Network error occurred'
+        console.error('[Title][Generate] Non-Axios Error Details:', {
+          message: error?.message,
+          name: error?.name,
+          stack: error?.stack,
+          cause: error?.cause,
+        })
+        
+        // Handle specific error types
+        if (error?.name === 'TypeError' && error?.message?.includes('fetch')) {
+          errorMessage = 'Network connection failed. Please check your internet connection.'
+        } else if (error?.name === 'AbortError') {
+          errorMessage = 'Request was cancelled or timed out.'
+        } else if (error?.code === 'ECONNABORTED') {
+          errorMessage = 'Request timed out. Please try again.'
+        } else if (error?.code === 'ERR_NETWORK') {
+          errorMessage = 'Network error. Please check your connection and try again.'
+        } else {
+          errorMessage = error?.message || 'Network error occurred'
+        }
       }
       
       setError(errorMessage)
@@ -134,6 +215,13 @@ export default function useTitle() {
       const errorMsg = 'Video ID and title are required'
       setError(errorMsg)
       toast({ title: 'Missing Data', description: errorMsg })
+      return
+    }
+
+    if (!API_BASE_URL) {
+      const errorMsg = 'API configuration error. Please check your environment settings.'
+      setError(errorMsg)
+      toast({ title: 'Configuration Error', description: errorMsg })
       return
     }
 
@@ -176,13 +264,22 @@ export default function useTitle() {
     } catch (error: any) {
       let errorMessage = 'Failed to save title'
       
+      // Log the full error object for debugging
+      console.error('[Title][Save] Full Error Object:', error)
+      console.error('[Title][Save] Error Type:', typeof error)
+      console.error('[Title][Save] Error Constructor:', error?.constructor?.name)
+      
       if (axios.isAxiosError(error)) {
-        console.error('[Title][Save] Error', {
+        console.error('[Title][Save] Axios Error Details:', {
           status: error.response?.status,
           statusText: error.response?.statusText,
           url: error.config?.url,
           data: error.response?.data,
           message: error.message,
+          code: error.code,
+          isAxiosError: error.isAxiosError,
+          responseHeaders: error.response?.headers,
+          requestHeaders: error.request?.headers,
         })
 
         if (error.response?.status === 401) {
@@ -199,8 +296,25 @@ export default function useTitle() {
           errorMessage = `Request failed: ${error.response?.status} ${error.response?.statusText}`
         }
       } else {
-        console.error('[Title][Save] Error (non-axios)', error)
-        errorMessage = error.message || 'Network error occurred'
+        console.error('[Title][Save] Non-Axios Error Details:', {
+          message: error?.message,
+          name: error?.name,
+          stack: error?.stack,
+          cause: error?.cause,
+        })
+        
+        // Handle specific error types
+        if (error?.name === 'TypeError' && error?.message?.includes('fetch')) {
+          errorMessage = 'Network connection failed. Please check your internet connection.'
+        } else if (error?.name === 'AbortError') {
+          errorMessage = 'Request was cancelled or timed out.'
+        } else if (error?.code === 'ECONNABORTED') {
+          errorMessage = 'Request timed out. Please try again.'
+        } else if (error?.code === 'ERR_NETWORK') {
+          errorMessage = 'Network error. Please check your connection and try again.'
+        } else {
+          errorMessage = error?.message || 'Network error occurred'
+        }
       }
       
       setError(errorMessage)
@@ -223,6 +337,13 @@ export default function useTitle() {
       const errorMsg = 'Video ID and requirements are required'
       setError(errorMsg)
       toast({ title: 'Missing Data', description: errorMsg })
+      return
+    }
+
+    if (!API_BASE_URL) {
+      const errorMsg = 'API configuration error. Please check your environment settings.'
+      setError(errorMsg)
+      toast({ title: 'Configuration Error', description: errorMsg })
       return
     }
 
@@ -269,13 +390,22 @@ export default function useTitle() {
     } catch (error: any) {
       let errorMessage = 'Failed to regenerate titles'
       
+      // Log the full error object for debugging
+      console.error('[Title][Regenerate] Full Error Object:', error)
+      console.error('[Title][Regenerate] Error Type:', typeof error)
+      console.error('[Title][Regenerate] Error Constructor:', error?.constructor?.name)
+      
       if (axios.isAxiosError(error)) {
-        console.error('[Title][Regenerate] Error', {
+        console.error('[Title][Regenerate] Axios Error Details:', {
           status: error.response?.status,
           statusText: error.response?.statusText,
           url: error.config?.url,
           data: error.response?.data,
           message: error.message,
+          code: error.code,
+          isAxiosError: error.isAxiosError,
+          responseHeaders: error.response?.headers,
+          requestHeaders: error.request?.headers,
         })
 
         if (error.response?.status === 401) {
@@ -292,8 +422,25 @@ export default function useTitle() {
           errorMessage = `Request failed: ${error.response?.status} ${error.response?.statusText}`
         }
       } else {
-        console.error('[Title][Regenerate] Error (non-axios)', error)
-        errorMessage = error.message || 'Network error occurred'
+        console.error('[Title][Regenerate] Non-Axios Error Details:', {
+          message: error?.message,
+          name: error?.name,
+          stack: error?.stack,
+          cause: error?.cause,
+        })
+        
+        // Handle specific error types
+        if (error?.name === 'TypeError' && error?.message?.includes('fetch')) {
+          errorMessage = 'Network connection failed. Please check your internet connection.'
+        } else if (error?.name === 'AbortError') {
+          errorMessage = 'Request was cancelled or timed out.'
+        } else if (error?.code === 'ECONNABORTED') {
+          errorMessage = 'Request timed out. Please try again.'
+        } else if (error?.code === 'ERR_NETWORK') {
+          errorMessage = 'Network error. Please check your connection and try again.'
+        } else {
+          errorMessage = error?.message || 'Network error occurred'
+        }
       }
       
       setError(errorMessage)

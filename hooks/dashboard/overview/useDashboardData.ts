@@ -355,7 +355,7 @@ const useDashboardOverview = () => {
 
         console.log("📋 API Response status:", response.status);
         console.log("📊 Response ok:", response.ok);
-
+        console.log("📊 Response:", response);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

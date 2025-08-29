@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import useVideo from '@/hooks/dashboard/videos/useVideo';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { asNumber } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -237,9 +238,9 @@ export default function VideoDetailPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">Performance Score</span>
-                      <span className="text-sm text-muted-foreground">{videoData.performance_score}</span>
+                      <span className="text-sm text-muted-foreground">{videoData.performance_score || 0}</span>
                     </div>
-                    <Progress value={Math.min(videoData.performance_score, 100)} className="h-2" />
+                    <Progress value={Math.min(videoData.performance_score || 0, 100)} className="h-2" />
                     <div className="flex items-center gap-2 mt-2">
                       <Badge className={getPerformanceColor(videoData.performance_level)}>
                         {videoData.performance_level}
@@ -250,9 +251,9 @@ export default function VideoDetailPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium">Engagement Rate</span>
-                      <span className="text-sm text-muted-foreground">{videoData.engagement_rate}%</span>
+                      <span className="text-sm text-muted-foreground">{videoData.engagement_rate || 0}%</span>
                     </div>
-                    <Progress value={Math.min(videoData.engagement_rate * 10, 100)} className="h-2" />
+                    <Progress value={Math.min((videoData.engagement_rate || 0) * 10, 100)} className="h-2" />
                     <div className="flex items-center gap-2 mt-2">
                       <Badge className={getEngagementColor(videoData.engagement_level)}>
                         {videoData.engagement_level}
@@ -264,17 +265,17 @@ export default function VideoDetailPage() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-600">{videoData.views_per_day}</div>
+                      <div className="text-2xl font-bold text-blue-600">{videoData.views_per_day || 0}</div>
                       <div className="text-xs text-muted-foreground">Views per Day</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{videoData.watch_time_hours.toFixed(2)}</div>
+                      <div className="text-2xl font-bold text-green-600">{(videoData.watch_time_hours || 0).toFixed(2)}</div>
                       <div className="text-xs text-muted-foreground">Watch Time (hrs)</div>
                     </div>
                   </div>
                   
                   <div className="text-center p-3 bg-muted/50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">{videoData.days_since_published}</div>
+                    <div className="text-2xl font-bold text-purple-600">{videoData.days_since_published || 0}</div>
                     <div className="text-xs text-muted-foreground">Days Since Published</div>
                   </div>
                 </div>
