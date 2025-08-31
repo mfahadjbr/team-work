@@ -25,6 +25,11 @@ const sidebarItems = [
     href: "/dashboard/videos",
     icon: Video,
   },
+  {
+    title: "YouTube Studio",
+    href: "/youtube-studio-dashboard",
+    icon: BarChart3,
+  },
 ]
 
 export function Sidebar() {
