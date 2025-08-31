@@ -43,42 +43,47 @@ const usePlaylistVideos = (playlistId: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPlaylistVideos = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const token = localStorage.getItem('auth_token');
+  const fetchPlaylistVideos = async (refresh: boolean = false) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem('auth_token');
 
-        const response = await fetch(
-          `http://localhost:8000/dashboard/playlists/${playlistId}/videos`,
-          {
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch playlist videos");
+      const response = await fetch(
+        `http://localhost:8000/dashboard/playlists/${playlistId}/videos?refresh=${refresh}`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const data: PlaylistVideosResponse = await response.json();
-        setPlaylistData(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to fetch playlist videos");
       }
-    };
 
+      const data: PlaylistVideosResponse = await response.json();
+      setPlaylistData(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     if (playlistId) {
-      fetchPlaylistVideos();
+      fetchPlaylistVideos(false); // Initial load with refresh=false
     }
   }, [playlistId]);
 
-  return { playlistData, isLoading, error };
+  return { 
+    playlistData, 
+    isLoading, 
+    error,
+    refetch: () => fetchPlaylistVideos(true) // Refresh with refresh=true
+  };
 };
 
 export default usePlaylistVideos;

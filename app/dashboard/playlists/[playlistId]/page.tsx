@@ -53,7 +53,8 @@ const getEngagementColor = (rate: number) => {
   return "text-red-600"
 }
 
-const getHealthColor = (level: string) => {
+const getHealthColor = (level?: string) => {
+  if (!level) return "text-gray-600 bg-gray-100"
   switch (level.toLowerCase()) {
     case "excellent": return "text-green-600 bg-green-100"
     case "good": return "text-blue-600 bg-blue-100"
@@ -73,8 +74,12 @@ export default function PlaylistVideosPage() {
   const [filterBy, setFilterBy] = useState("all")
   const [showAll, setShowAll] = useState(false)
 
-  const { playlistData, isLoading, error } = usePlaylistAnalytics(playlistId)
-  const { playlistData: playlistVideos, isLoading: isVideosLoading, error: videosError } = usePlaylistVideos(playlistId)
+  const handleRefresh = async () => {
+    await Promise.all([refetchAnalytics(), refetchVideos()])
+  }
+
+  const { playlistData, isLoading, error, refetch: refetchAnalytics } = usePlaylistAnalytics(playlistId)
+  const { playlistData: playlistVideos, isLoading: isVideosLoading, error: videosError, refetch: refetchVideos } = usePlaylistVideos(playlistId)
 
   // Create video list from top performing videos (always run this hook)
   const videos = useMemo(() => {
@@ -216,7 +221,7 @@ export default function PlaylistVideosPage() {
         </div>
         <div className="flex justify-end">
           <RefreshButton 
-            onRefresh={() => window.location.reload()}
+            onRefresh={handleRefresh}
             variant="outline"
             size="sm"
           />

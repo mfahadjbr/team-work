@@ -24,6 +24,13 @@ export function ThumbnailSection({
 }: ThumbnailSectionProps) {
 
   const handleThumbnailSelect = (thumbnail: string) => {
+    console.log('[ThumbnailSection] Thumbnail selected:', {
+      thumbnail: thumbnail.substring(0, 100) + '...',
+      currentSelected: state.content.selectedThumbnail,
+      thumbnailsCount: state.content.thumbnails.length,
+      generatedThumbnailsCount: generatedThumbnails.length
+    })
+    
     updateState({
       content: {
         ...state.content,
@@ -49,6 +56,18 @@ export function ThumbnailSection({
     updateState({ currentStep: "preview" })
   }
 
+  // Debug logging
+  console.log('[ThumbnailSection] Component state:', {
+    stateThumbnailsCount: state.content.thumbnails.length,
+    generatedThumbnailsCount: generatedThumbnails.length,
+    selectedThumbnail: state.content.selectedThumbnail,
+    isProcessing: state.isProcessing,
+    thumbnailsLoading,
+    thumbnailsToShow: state.content.thumbnails.length > 0 ? state.content.thumbnails : generatedThumbnails,
+    stateThumbnails: state.content.thumbnails,
+    generatedThumbnailsArray: generatedThumbnails
+  })
+
   return (
     <Card>
       <CardHeader>
@@ -59,7 +78,16 @@ export function ThumbnailSection({
       </CardHeader>
       <CardContent className="space-y-6">
         <Button 
-          onClick={handlers.generateThumbnails} 
+          onClick={() => {
+            console.log('[ThumbnailSection] Generate button clicked!')
+            console.log('[ThumbnailSection] Current state before generation:', {
+              stateThumbnails: state.content.thumbnails,
+              generatedThumbnails: generatedThumbnails,
+              isProcessing: state.isProcessing,
+              thumbnailsLoading
+            })
+            handlers.generateThumbnails()
+          }} 
           disabled={state.isProcessing || thumbnailsLoading} 
           className="w-full"
         >

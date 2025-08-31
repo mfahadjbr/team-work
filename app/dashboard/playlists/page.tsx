@@ -90,7 +90,7 @@ export default function PlaylistsPage() {
 }
 
 function PlaylistData({ playlistId }: { playlistId: string }) {
-  const { playlistData, isLoading, error } = usePlaylistAnalytics(playlistId)
+  const { playlistData, isLoading, error, refetch } = usePlaylistAnalytics(playlistId)
 
   if (isLoading) {
     return (
@@ -133,7 +133,7 @@ function PlaylistData({ playlistId }: { playlistId: string }) {
             </Link>
           </Button>
           <RefreshButton 
-            onRefresh={() => window.location.reload()}
+            onRefresh={refetch}
             variant="outline"
             size="sm"
           />

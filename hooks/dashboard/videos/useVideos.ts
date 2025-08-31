@@ -8,40 +8,40 @@ const useVideos = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
+  const fetchData = async (refresh: boolean = false) => {
+    setIsLoading(true);
+    setError(null);
 
-      try {
-        const token = localStorage.getItem('auth_token');
-        
-        if (!token) {
-          throw new Error('No authentication token found');
-        }
-
-        const response = await fetch('http://localhost:8000/dashboard/videos', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'accept': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch dashboard videos');
-        }
-
-        const result: DashboardVideosResponse = await response.json();
-        setData(result);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+    try {
+      const token = localStorage.getItem('auth_token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
       }
-    };
 
-    fetchData();
+      const response = await fetch(`http://localhost:8000/dashboard/videos?refresh=${refresh}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch dashboard videos');
+      }
+
+      const result: DashboardVideosResponse = await response.json();
+      setData(result);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(false); // Initial load with refresh=false
   }, []);
 
   // Calculate video stats
@@ -86,7 +86,8 @@ const useVideos = () => {
     videos: data?.data || [], 
     videoStats, 
     isLoading, 
-    error 
+    error,
+    refetch: () => fetchData(true) // Refresh with refresh=true
   };
 };
 

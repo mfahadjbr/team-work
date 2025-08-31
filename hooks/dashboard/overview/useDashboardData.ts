@@ -329,56 +329,56 @@ const useDashboardOverview = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchDashboardOverview = async () => {
-      try {
-        console.log("🏠 Starting dashboard overview fetch...");
-        setIsLoading(true);
-        setError(null);
+  const fetchDashboardOverview = async (refresh: boolean = false) => {
+    try {
+      console.log("🏠 Starting dashboard overview fetch...", { refresh });
+      setIsLoading(true);
+      setError(null);
 
-         const token = localStorage.getItem('auth_token')
-        console.log("🎫 Token exists:", !!token);
+      const token = localStorage.getItem('auth_token')
+      console.log("🎫 Token exists:", !!token);
 
-        if (!token) {
-          throw new Error("No authentication token found");
-        }
-
-        console.log("📡 Making API call to dashboard overview endpoint");
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
-        const response = await fetch(`${API_BASE_URL}/dashboard/overview`, {
-          method: "GET",
-          headers: {
-            "accept": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-        });
-
-        console.log("📋 API Response status:", response.status);
-        console.log("📊 Response ok:", response.ok);
-        console.log("📊 Response:", response);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result: DashboardOverviewResponse = await response.json();
-        console.log("🎬 Dashboard overview data received:", result);
-
-        if (result.success) {
-          setData(result);
-          console.log("✅ Dashboard overview data set successfully");
-        } else {
-          throw new Error(result.message || "Failed to fetch dashboard overview");
-        }
-      } catch (err) {
-        console.error("❌ Dashboard overview fetch error:", err);
-        setError(err instanceof Error ? err.message : "An error occurred");
-      } finally {
-        setIsLoading(false);
-        console.log("🏁 Dashboard overview fetch completed");
+      if (!token) {
+        throw new Error("No authentication token found");
       }
-    };
 
-    fetchDashboardOverview();
+      console.log("📡 Making API call to dashboard overview endpoint");
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
+      const response = await fetch(`${API_BASE_URL}/dashboard/overview?refresh=${refresh}`, {
+        method: "GET",
+        headers: {
+          "accept": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      console.log("📋 API Response status:", response.status);
+      console.log("📊 Response ok:", response.ok);
+      console.log("📊 Response:", response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result: DashboardOverviewResponse = await response.json();
+      console.log("🎬 Dashboard overview data received:", result);
+
+      if (result.success) {
+        setData(result);
+        console.log("✅ Dashboard overview data set successfully");
+      } else {
+        throw new Error(result.message || "Failed to fetch dashboard overview");
+      }
+    } catch (err) {
+      console.error("❌ Dashboard overview fetch error:", err);
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+      console.log("🏁 Dashboard overview fetch completed");
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardOverview(false); // Initial load with refresh=false
   }, []);
 
   return {
@@ -386,11 +386,7 @@ const useDashboardOverview = () => {
     overviewData: data?.data || null,
     isLoading,
     error,
-    refetch: () => {
-      setData(null);
-      setError(null);
-      setIsLoading(true);
-    }
+    refetch: () => fetchDashboardOverview(true) // Refresh with refresh=true
   };
 };
 

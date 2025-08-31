@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Sidebar } from "@/components/Sidebar"
 import { DashboardHeader } from "@/components/DashboardHeader"
-import { isAuthenticated } from "@/lib/auth"
+import { useAuth } from "@/hooks/auth"
 
 export default function DashboardLayout({
   children,
@@ -14,23 +14,27 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
+  const { isAuthenticated, isLoading: authLoading } = useAuth()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     console.log('🏠 Dashboard Layout useEffect triggered');
-    const authStatus = isAuthenticated();
-    console.log('🔐 Authentication status:', authStatus);
+    console.log('🔐 Authentication status:', isAuthenticated);
+    console.log('🔄 Auth loading status:', authLoading);
     console.log('🎫 Token exists:', !!localStorage.getItem('auth_token'));
     console.log('👤 User data exists:', !!localStorage.getItem('user_data'));
     
-    if (!authStatus) {
+    if (!authLoading && !isAuthenticated) {
       console.log('❌ Not authenticated, redirecting to login');
       router.push("/auth/login")
       return
     }
-    console.log('✅ Authenticated, setting loading to false');
-    setIsLoading(false)
-  }, [router])
+    
+    if (!authLoading && isAuthenticated) {
+      console.log('✅ Authenticated, setting loading to false');
+      setIsLoading(false)
+    }
+  }, [isAuthenticated, authLoading, router])
 
   console.log('🏠 Dashboard Layout render - isLoading:', isLoading);
 

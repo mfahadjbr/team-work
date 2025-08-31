@@ -115,7 +115,9 @@ export function Sidebar() {
                               setIsPlaylistsOpen(false)
                             }}
                           >
-                            {playlist.name}
+                            <span className="truncate max-w-[180px]" title={playlist.name}>
+                              {playlist.name}
+                            </span>
                           </Button>
                         </Link>
                       ))

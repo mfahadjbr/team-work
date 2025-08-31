@@ -14,7 +14,7 @@ import { useAuth } from '@/hooks/auth'
 
 export default function CredentialPage() {
   const router = useRouter()
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth()
   const { createCredentials, isLoading, error, clearError } = useCreateYouTubeCredentials()
   const { 
     checkYouTubeCredentials, 
@@ -33,10 +33,10 @@ export default function CredentialPage() {
 
   // Redirect if not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !authLoading) {
       router.push('/auth/login')
     }
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, authLoading, router])
 
   // Check for existing credentials when component mounts
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function CredentialPage() {
     }
   }
 
-  if (!isAuthenticated) {
+  if (authLoading || !isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-green-50">
         <Loader2 className="h-8 w-8 animate-spin text-green-600" />

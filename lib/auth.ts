@@ -1,6 +1,6 @@
 "use client"
 
-import type { User } from '@/hooks/useAuth'
+import type { User } from '@/hooks/auth/useAuth'
 import axios from 'axios'
 
 export type { User }

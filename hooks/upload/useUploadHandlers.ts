@@ -213,6 +213,14 @@ export const useUploadHandlers = ({
 
   const generateThumbnails = useCallback(async () => {
     const videoId = uploadedVideoData?.id || getCurrentVideoId()
+    
+    console.log('[UploadHandlers] generateThumbnails called:', {
+      videoId,
+      uploadedVideoDataId: uploadedVideoData?.id,
+      getCurrentVideoIdResult: getCurrentVideoId(),
+      hasVideoId: !!videoId
+    })
+    
     if (!videoId) {
       toast({ 
         title: 'Upload Required', 
@@ -223,17 +231,41 @@ export const useUploadHandlers = ({
 
     updateState({ isProcessing: true })
     try {
+      console.log('[UploadHandlers] Calling generateThumbnailsAPI with videoId:', videoId)
+      console.log('[UploadHandlers] Video ID type and value:', {
+        videoId,
+        videoIdType: typeof videoId,
+        videoIdLength: videoId?.length,
+        isUUID: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(videoId || '')
+      })
+      
       const result = await generateThumbnailsAPI(videoId)
+      
+      console.log('[UploadHandlers] generateThumbnailsAPI result:', {
+        success: result?.success,
+        thumbnailsCount: result?.thumbnails?.length,
+        thumbnails: result?.thumbnails?.map((url: string, i: number) => `Thumbnail ${i + 1}: ${url.substring(0, 100)}...`),
+        message: result?.message,
+        videoId: result?.video_id
+      })
+      
       if (result && result.thumbnails) {
+        console.log('[UploadHandlers] Updating state with thumbnails:', {
+          currentThumbnailsCount: state.content.thumbnails.length,
+          newThumbnailsCount: result.thumbnails.length
+        })
+        
         updateState({
           content: {
             ...state.content,
             thumbnails: result.thumbnails,
           }
         })
+      } else {
+        console.warn('[UploadHandlers] No thumbnails in result or result is falsy:', result)
       }
     } catch (error) {
-      console.error('Failed to generate thumbnails:', error)
+      console.error('[UploadHandlers] Failed to generate thumbnails:', error)
     } finally {
       updateState({ isProcessing: false })
     }

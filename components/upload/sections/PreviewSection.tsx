@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Eye, RefreshCw, AlertCircle, ImageIcon, Globe, Lock, Users, Play } from "lucide-react"
+import { Eye, RefreshCw, AlertCircle, ImageIcon, Globe, Lock, Users, Play, Sparkles, FileText, Clock } from "lucide-react"
 import { UploadState, UploadHandlers } from "@/types/upload"
 
 interface PreviewSectionProps {
@@ -72,38 +72,45 @@ export function PreviewSection({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
-          <Eye className="h-5 w-5" />
+    <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/30">
+      <CardHeader className="pb-6">
+        <CardTitle className="flex items-center gap-3 text-2xl lg:text-3xl font-bold text-blue-900">
+          <div className="p-2 bg-blue-100 rounded-lg">
+            <Eye className="h-6 w-6 text-blue-600" />
+          </div>
           {state.previewStage === 1 ? "Review Content" : state.previewStage === 2 ? "Settings" : "Final Preview"}
         </CardTitle>
-        <p className="text-muted-foreground">
+        <p className="text-lg text-blue-700 mt-2">
           {state.previewStage === 1 ? "Review your generated content" : 
            state.previewStage === 2 ? "Configure privacy and playlist settings" : 
            "Final review before upload"}
         </p>
         
         {/* Stage Progress Indicator */}
-        <div className="flex items-center gap-2 mt-4">
+        <div className="flex items-center gap-4 mt-6 p-4 bg-white/50 rounded-xl border border-blue-200/30">
           {[1, 2, 3].map((stageNum) => (
             <div key={stageNum} className="flex items-center">
               <div
-                className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
+                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
                   state.previewStage === stageNum
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-blue-600 bg-blue-600 text-white shadow-lg scale-110"
                     : state.previewStage > stageNum
-                      ? "border-green-500 bg-green-500 text-white"
-                      : "border-muted-foreground bg-background"
+                      ? "border-green-500 bg-green-500 text-white shadow-md"
+                      : "border-blue-200 bg-white text-blue-400"
                 }`}
               >
-                <span className="text-xs font-medium">{stageNum}</span>
+                <span className="text-sm font-semibold">{stageNum}</span>
               </div>
-              <span className="ml-2 text-sm">
+              <span className={`ml-3 text-sm font-medium ${
+                state.previewStage === stageNum ? "text-blue-900" : 
+                state.previewStage > stageNum ? "text-green-700" : "text-blue-600"
+              }`}>
                 {stageNum === 1 ? "Content" : stageNum === 2 ? "Settings" : "Preview"}
               </span>
               {stageNum < 3 && (
-                <div className={`h-0.5 flex-1 mx-2 ${state.previewStage > stageNum ? "bg-green-500" : "bg-muted"}`} />
+                <div className={`h-1 flex-1 mx-4 rounded-full transition-all duration-300 ${
+                  state.previewStage > stageNum ? "bg-green-500" : "bg-blue-200"
+                }`} />
               )}
             </div>
           ))}
@@ -225,7 +232,19 @@ export function PreviewSection({
 
             {/* Playlist Selection */}
             <div className="space-y-4">
-              <Label className="text-base font-medium">Add to Playlist (Optional)</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-base font-medium">Add to Playlist (Optional)</Label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fetchPlaylists}
+                  disabled={playlistsLoading}
+                  className="gap-2"
+                >
+                  <RefreshCw className={`w-4 h-4 ${playlistsLoading ? 'animate-spin' : ''}`} />
+                  Refresh
+                </Button>
+              </div>
               
               {playlistsLoading && (
                 <div className="text-center p-4">
@@ -255,13 +274,13 @@ export function PreviewSection({
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
-                          <div className="font-medium text-sm">{playlist.snippet?.title}</div>
+                          <div className="font-medium text-sm">{playlist.name}</div>
                           <div className="text-xs text-muted-foreground">
-                            {playlist.contentDetails?.itemCount || 0} videos
+                            Playlist ID: {playlist.id}
                           </div>
                         </div>
-                        <Badge variant="outline" className="text-xs capitalize">
-                          {playlist.status?.privacyStatus}
+                        <Badge variant="outline" className="text-xs">
+                          Available
                         </Badge>
                       </div>
                     </div>
@@ -350,9 +369,12 @@ export function PreviewSection({
                     
                     {/* Video Title */}
                     <div className="space-y-3">
-                      <Label className="text-lg font-semibold">Title</Label>
-                      <div className="p-4 border rounded-lg bg-muted/20">
-                        <h3 className="font-semibold text-lg">
+                      <Label className="text-lg font-semibold flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-blue-600" />
+                        Video Title
+                      </Label>
+                      <div className="p-6 border rounded-xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm">
+                        <h3 className="font-semibold text-xl text-blue-900">
                           {previewData?.title || state.content.selectedTitle || state.customTitle || 'No title generated'}
                         </h3>
                       </div>
@@ -360,21 +382,24 @@ export function PreviewSection({
 
                     {/* Thumbnail */}
                     <div className="space-y-3">
-                      <Label className="text-lg font-semibold">Thumbnail</Label>
-                      <div className="p-4 border rounded-lg bg-muted/20">
+                      <Label className="text-lg font-semibold flex items-center gap-2">
+                        <ImageIcon className="w-5 h-5 text-blue-600" />
+                        Video Thumbnail
+                      </Label>
+                      <div className="p-6 border rounded-xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm">
                         {(previewData?.thumbnail_url || state.content.selectedThumbnail) ? (
                           <div className="w-full max-w-md mx-auto">
                             <img
                               src={previewData?.thumbnail_url || state.content.selectedThumbnail}
                               alt="Video thumbnail"
-                              className="w-full h-auto rounded-lg border shadow-sm"
+                              className="w-full h-auto rounded-xl border-2 border-blue-200/30 shadow-lg"
                             />
                           </div>
                         ) : (
-                          <div className="w-full max-w-md mx-auto h-48 border rounded-lg flex items-center justify-center text-muted-foreground bg-muted/10">
+                          <div className="w-full max-w-md mx-auto h-48 border-2 border-dashed border-blue-200/30 rounded-xl flex items-center justify-center text-muted-foreground bg-blue-50/20">
                             <div className="text-center">
-                              <ImageIcon className="w-12 h-12 mx-auto mb-2" />
-                              <span>No thumbnail available</span>
+                              <ImageIcon className="w-12 h-12 mx-auto mb-2 text-blue-400" />
+                              <span className="text-blue-600">No thumbnail available</span>
                             </div>
                           </div>
                         )}
@@ -383,83 +408,105 @@ export function PreviewSection({
 
                     {/* Description */}
                     <div className="space-y-3">
-                      <Label className="text-lg font-semibold">Description</Label>
-                      <div className="border rounded-lg p-4 bg-muted/20 max-h-60 overflow-y-auto">
+                      <Label className="text-lg font-semibold flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-blue-600" />
+                        Video Description
+                      </Label>
+                      <div className="border rounded-xl p-6 bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm max-h-60 overflow-y-auto">
                         {(previewData?.description || state.content.description || state.customDescription) ? (
-                          <pre className="text-sm whitespace-pre-wrap leading-relaxed">
+                          <pre className="text-sm whitespace-pre-wrap leading-relaxed text-blue-900">
                             {previewData?.description || state.content.description || state.customDescription}
                           </pre>
                         ) : (
-                          <p className="text-sm text-muted-foreground italic">No description generated</p>
+                          <div className="text-center py-8">
+                            <FileText className="w-8 h-8 mx-auto mb-2 text-blue-400" />
+                            <p className="text-sm text-blue-600 italic">No description generated</p>
+                          </div>
                         )}
                       </div>
                     </div>
 
                     {/* Timestamps */}
                     <div className="space-y-3">
-                      <Label className="text-lg font-semibold">Timestamps</Label>
-                      <div className="border rounded-lg p-4 bg-muted/20 max-h-60 overflow-y-auto">
+                      <Label className="text-lg font-semibold flex items-center gap-2">
+                        <Clock className="w-5 h-5 text-blue-600" />
+                        Video Timestamps
+                      </Label>
+                      <div className="border rounded-xl p-6 bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm max-h-60 overflow-y-auto">
                         {(previewData?.timestamps || state.content.timestamps || state.customTimestamps) ? (
-                          <pre className="text-sm whitespace-pre-wrap font-mono leading-relaxed">
+                          <pre className="text-sm whitespace-pre-wrap font-mono leading-relaxed text-blue-900">
                             {previewData?.timestamps || state.content.timestamps || state.customTimestamps}
                           </pre>
                         ) : (
-                          <p className="text-sm text-muted-foreground italic">No timestamps generated</p>
+                          <div className="text-center py-8">
+                            <Clock className="w-8 h-8 mx-auto mb-2 text-blue-400" />
+                            <p className="text-sm text-blue-600 italic">No timestamps generated</p>
+                          </div>
                         )}
                       </div>
                     </div>
 
-                    {/* Summary Info */}
-                    <div className="border rounded-lg p-4 bg-gradient-to-r from-blue-50/50 to-purple-50/50 border-blue-200/30">
-                      <h3 className="text-lg font-semibold mb-4 text-blue-900">Upload Settings</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-muted-foreground">Privacy</Label>
-                          <div className="flex items-center gap-2">
-                            <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${
-                              state.selectedPrivacy === 'public' ? 'bg-green-100 text-green-800' :
-                              state.selectedPrivacy === 'unlisted' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
+                                        {/* Summary Info */}
+                    <div className="border rounded-xl p-6 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 border-blue-200/30 shadow-sm">
+                      <h3 className="text-xl font-semibold mb-6 text-blue-900 flex items-center gap-2">
+                        <Globe className="w-5 h-5" />
+                        Upload Settings
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Privacy Setting</Label>
+                          <div className="flex items-center gap-3">
+                            <Badge className={`px-4 py-2 text-sm font-medium capitalize ${
+                              state.selectedPrivacy === 'public' ? 'bg-green-100 text-green-800 border-green-200' : 
+                              state.selectedPrivacy === 'unlisted' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 
+                              'bg-red-100 text-red-800 border-red-200'
                             }`}>
+                              {state.selectedPrivacy === 'public' && <Globe className="w-4 h-4 mr-2" />}
+                              {state.selectedPrivacy === 'unlisted' && <Users className="w-4 h-4 mr-2" />}
+                              {state.selectedPrivacy === 'private' && <Lock className="w-4 h-4 mr-2" />}
                               {state.selectedPrivacy}
-                            </span>
+                            </Badge>
                           </div>
                         </div>
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium text-muted-foreground">Playlist</Label>
-                          <div className="text-sm">
-                            {state.selectedPlaylist ? state.selectedPlaylist.snippet?.title : 'No playlist selected'}
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Playlist</Label>
+                          <div className="flex items-center gap-2">
+                            {state.selectedPlaylist ? (
+                              <div className="flex items-center gap-2">
+                                <Play className="w-4 h-4 text-blue-600" />
+                                <span className="text-sm font-medium text-blue-900">{state.selectedPlaylist.name}</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Play className="w-4 h-4" />
+                                <span className="text-sm">No playlist selected</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Upload Buttons */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 pt-4">
+                    {/* Upload Button */}
+                    <div className="pt-6">
                       <Button
                         onClick={() => handlers.handlePublish('public')}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                         disabled={state.isUploading}
+                        size="lg"
                       >
-                        <Globe className="w-4 h-4 mr-2" />
-                        Upload as Public
+                        <Globe className="w-5 h-5 mr-3" />
+                        {state.isUploading ? 'Uploading to YouTube...' : 'Upload to YouTube'}
                       </Button>
-                      <Button
-                        onClick={() => handlers.handlePublish('unlisted')}
-                        className="bg-blue-600 hover:bg-blue-700"
-                        disabled={state.isUploading}
-                      >
-                        <Users className="w-4 h-4 mr-2" />
-                        Upload as Unlisted
-                      </Button>
-                      <Button
-                        onClick={() => handlers.handlePublish('private')}
-                        className="bg-gray-600 hover:bg-gray-700"
-                        disabled={state.isUploading}
-                      >
-                        <Lock className="w-4 h-4 mr-2" />
-                        Upload as Private
-                      </Button>
+                      
+                      {state.isUploading && (
+                        <div className="mt-4 text-center">
+                          <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
+                            Please wait while we upload your video...
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -482,3 +529,4 @@ export function PreviewSection({
     </Card>
   )
 }
+

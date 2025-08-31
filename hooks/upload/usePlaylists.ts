@@ -4,23 +4,17 @@ import useAuth from '../auth/useAuth'
 
 export interface Playlist {
   id: string
-  title: string
-  description: string
-  privacy: string
+  name: string
 }
 
 interface PlaylistsResponse {
-  success: boolean
-  message: string
   data: Playlist[]
-  count: number
 }
 
 interface PlaylistsState {
   playlists: Playlist[]
   isLoading: boolean
   error: string | null
-  count: number
 }
 
 export default function usePlaylists() {
@@ -29,7 +23,6 @@ export default function usePlaylists() {
     playlists: [],
     isLoading: false,
     error: null,
-    count: 0,
   })
 
   const fetchPlaylists = useCallback(async () => {
@@ -44,7 +37,7 @@ export default function usePlaylists() {
       console.log('[Playlists] Fetching user playlists...')
       
       const response = await axios.get(
-        'http://localhost:8000/playlists/my-playlists',
+        'http://localhost:8000/playlists/channel-playlists',
         { headers }
       )
 
@@ -54,7 +47,6 @@ export default function usePlaylists() {
       setState(prev => ({
         ...prev,
         playlists: responseData.data || [],
-        count: responseData.count || 0,
         isLoading: false,
       }))
 
@@ -94,7 +86,6 @@ export default function usePlaylists() {
       playlists: [],
       isLoading: false,
       error: null,
-      count: 0,
     })
   }, [])
 

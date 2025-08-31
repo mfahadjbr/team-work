@@ -8,43 +8,43 @@ export function usePlaylists() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const fetchPlaylists = async (refresh: boolean = false) => {
+    try {
+      setIsLoading(true)
+      
+      // Get token from localStorage (you might want to adjust this based on your auth implementation)
+      const token = localStorage.getItem('auth_token') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1emFpciIsImV4cCI6MTc1NjgzMDY4M30.aOBeTuTo2AaSQttMBCwvFxm1Zq6fK2FQ3F-fLw2WL_c'
+      
+      const response = await fetch(`http://localhost:8000/dashboard/playlists?refresh=${refresh}`, {
+        method: 'GET',
+        headers: {
+          'accept': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data: PlaylistsResponse = await response.json()
+      
+      if (data.success) {
+        setPlaylists(data.data)
+      } else {
+        throw new Error(data.message || 'Failed to fetch playlists')
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
+      console.error('Error fetching playlists:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   // Fetch playlists data
   useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        setIsLoading(true)
-        
-        // Get token from localStorage (you might want to adjust this based on your auth implementation)
-        const token = localStorage.getItem('auth_token') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1emFpciIsImV4cCI6MTc1NjgzMDY4M30.aOBeTuTo2AaSQttMBCwvFxm1Zq6fK2FQ3F-fLw2WL_c'
-        
-        const response = await fetch('http://localhost:8000/dashboard/playlists', {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const data: PlaylistsResponse = await response.json()
-        
-        if (data.success) {
-          setPlaylists(data.data)
-        } else {
-          throw new Error(data.message || 'Failed to fetch playlists')
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
-        console.error('Error fetching playlists:', err)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchPlaylists()
+    fetchPlaylists(false) // Initial load with refresh=false
   }, [])
 
   // Calculate playlist statistics
@@ -128,40 +128,7 @@ export function usePlaylists() {
 
   const refreshData = async () => {
     setError(null)
-    const fetchPlaylists = async () => {
-      try {
-        setIsLoading(true)
-        
-        const token = localStorage.getItem('auth_token') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1emFpciIsImV4cCI6MTc1NjgzMDY4M30.aOBeTuTo2AaSQttMBCwvFxm1Zq6fK2FQ3F-fLw2WL_c'
-        
-        const response = await fetch('http://localhost:8000/dashboard/playlists', {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const data: PlaylistsResponse = await response.json()
-        
-        if (data.success) {
-          setPlaylists(data.data)
-        } else {
-          throw new Error(data.message || 'Failed to fetch playlists')
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
-        console.error('Error fetching playlists:', err)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    await fetchPlaylists()
+    await fetchPlaylists(true) // Refresh with refresh=true
   }
 
   return {

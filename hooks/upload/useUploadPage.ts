@@ -28,6 +28,16 @@ export const useUploadPage = () => {
 
   // All the existing hooks
   const { uploadVideo, isUploading: videoUploading, progress: videoProgress, resetUploadState, getCurrentVideoData, getCurrentVideoId } = useVideos()
+  
+  // Debug logging for video ID tracking
+  useEffect(() => {
+    console.log('[UploadPage] Video ID Debug Info:', {
+      getCurrentVideoId: getCurrentVideoId(),
+      getCurrentVideoData: getCurrentVideoData(),
+      hasVideoId: !!getCurrentVideoId(),
+      hasVideoData: !!getCurrentVideoData()
+    })
+  }, [getCurrentVideoId, getCurrentVideoData])
   const { generateTitles, saveTitle, regenerateTitlesWithRequirements, generatedTitles, isLoading: titleLoading } = useTitle()
   const { 
     generateDescription: generateDescriptionAPI, 

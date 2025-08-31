@@ -170,11 +170,24 @@ export default function useVideos() {
 
       // Save video data to localStorage for persistence across page refreshes
       if (response.data) {
+        console.log('📝 Video ID from upload response:', response.data.id)
+        console.log('📝 Full response data:', response.data)
+        
         localStorage.setItem('current_video_data', JSON.stringify(response.data))
         localStorage.setItem('current_video_id', response.data.id)
+        
         console.log('💾 Video data saved to localStorage:', {
           video_id: response.data.id,
-          localStorage_key: 'current_video_data'
+          localStorage_key: 'current_video_data',
+          localStorage_video_id_key: 'current_video_id'
+        })
+        
+        // Verify the data was stored correctly
+        const storedId = localStorage.getItem('current_video_id')
+        const storedData = localStorage.getItem('current_video_data')
+        console.log('✅ Verification - Stored in localStorage:', {
+          stored_video_id: storedId,
+          stored_video_data: storedData ? JSON.parse(storedData) : null
         })
       }
 
@@ -248,31 +261,52 @@ export default function useVideos() {
 
   const getCurrentVideoData = useCallback((): VideoUploadResponse | null => {
     try {
+      console.log('🔍 getCurrentVideoData called - checking localStorage...')
+      
       const videoData = localStorage.getItem('current_video_data')
+      console.log('🔍 Raw video data from localStorage:', videoData)
+      
       if (videoData) {
         const parsed = JSON.parse(videoData)
-        console.log('📖 Retrieved video data from localStorage:', parsed)
+        console.log('✅ Parsed video data from localStorage:', {
+          id: parsed.id,
+          user_id: parsed.user_id,
+          video_path: parsed.video_path,
+          created_at: parsed.created_at
+        })
         return parsed
       }
+      
+      console.log('⚠️ No video data found in localStorage')
     } catch (error) {
-      console.error('Error retrieving video data from localStorage:', error)
+      console.error('❌ Error retrieving video data from localStorage:', error)
     }
     return null
   }, [])
 
   const getCurrentVideoId = useCallback((): string | null => {
     try {
+      console.log('🔍 getCurrentVideoId called - checking localStorage...')
+      
       const videoId = localStorage.getItem('current_video_id')
+      console.log('🔍 Retrieved video ID from localStorage:', videoId)
+      
       if (videoId) {
-        console.log('📖 Retrieved video ID from localStorage:', videoId)
+        console.log('✅ Found video ID in localStorage:', videoId)
         return videoId
       }
       
+      console.log('⚠️ No video ID in localStorage, falling back to video data...')
+      
       // Fallback to getting from video data
       const videoData = getCurrentVideoData()
-      return videoData?.id || null
+      const fallbackId = videoData?.id || null
+      
+      console.log('🔍 Fallback video ID from video data:', fallbackId)
+      
+      return fallbackId
     } catch (error) {
-      console.error('Error retrieving video ID from localStorage:', error)
+      console.error('❌ Error retrieving video ID from localStorage:', error)
     }
     return null
   }, [getCurrentVideoData])

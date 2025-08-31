@@ -84,6 +84,13 @@ export default function useThumbnail() {
   }, [getAuthHeaders])
 
   const generateThumbnails = useCallback(async (videoId: string): Promise<ThumbnailBatchResponse | undefined> => {
+    console.log('[Thumbnail][Batch Generate] Entry point - videoId received:', {
+      videoId,
+      videoIdType: typeof videoId,
+      videoIdLength: videoId?.length,
+      isUUID: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(videoId || '')
+    })
+    
     if (!videoId) {
       const errorMsg = 'Video ID is required'
       setError(errorMsg)

@@ -39,7 +39,8 @@ const formatDate = (dateString: string) => {
   })
 }
 
-const getPerformanceColor = (level: string) => {
+const getPerformanceColor = (level?: string) => {
+  if (!level) return "text-gray-600 bg-gray-100"
   switch (level.toLowerCase()) {
     case "excellent": return "text-green-600 bg-green-100"
     case "good": return "text-blue-600 bg-blue-100"
@@ -49,7 +50,8 @@ const getPerformanceColor = (level: string) => {
   }
 }
 
-const getEngagementColor = (level: string) => {
+const getEngagementColor = (level?: string) => {
+  if (!level) return "text-gray-600 bg-gray-100"
   switch (level.toLowerCase()) {
     case "high": return "text-green-600 bg-green-100"
     case "medium": return "text-yellow-600 bg-yellow-100"
@@ -58,7 +60,8 @@ const getEngagementColor = (level: string) => {
   }
 }
 
-const getGrowthColor = (potential: string) => {
+const getGrowthColor = (potential?: string) => {
+  if (!potential) return "text-gray-600 bg-gray-100"
   switch (potential.toLowerCase()) {
     case "high": return "text-green-600 bg-green-100"
     case "medium": return "text-yellow-600 bg-yellow-100"
@@ -71,7 +74,7 @@ export default function VideoDetailPage() {
   const params = useParams();
   const videoId = params.videoId as string;
   
-  const { data, video: videoData, isLoading, error } = useVideo(videoId);
+  const { data, video: videoData, isLoading, error, refetch } = useVideo(videoId);
 
   if (isLoading) {
     return (
@@ -138,7 +141,7 @@ export default function VideoDetailPage() {
         </div>
         <div className="flex justify-end">
           <RefreshButton 
-            onRefresh={() => window.location.reload()}
+            onRefresh={refetch}
             variant="outline"
             size="sm"
           />
@@ -161,7 +164,7 @@ export default function VideoDetailPage() {
                 </div>
                 <div className="absolute top-4 right-4">
                   <Button size="sm" asChild style={{ backgroundColor: "#00C951" }} className="hover:bg-[#00A843]">
-                    <Link href={videoData.youtube_url} target="_blank">
+                    <Link href={videoData.youtube_url || videoData.analytics?.url || `https://www.youtube.com/watch?v=${videoData.video_id}`} target="_blank">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Watch on YouTube
                     </Link>
@@ -293,12 +296,18 @@ export default function VideoDetailPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {videoData.recommendations.map((recommendation, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <span className="text-sm text-blue-800">{recommendation}</span>
+                {videoData.recommendations && videoData.recommendations.length > 0 ? (
+                  videoData.recommendations.map((recommendation, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                      <span className="text-sm text-blue-800">{recommendation}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-6 text-muted-foreground">
+                    <p>No AI recommendations available for this video.</p>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -306,68 +315,72 @@ export default function VideoDetailPage() {
 
         <div className="space-y-6">
           {/* Performance Indicators */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="w-5 h-5" />
-                Performance Indicators
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-2 rounded border">
-                  <span className="text-sm">High Performing</span>
-                  <Badge variant={videoData.analytics_summary.performance_indicators.is_high_performing ? "default" : "secondary"}>
-                    {videoData.analytics_summary.performance_indicators.is_high_performing ? "Yes" : "No"}
-                  </Badge>
+          {videoData.analytics_summary && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  Performance Indicators
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-2 rounded border">
+                    <span className="text-sm">High Performing</span>
+                    <Badge variant={videoData.analytics_summary.performance_indicators?.is_high_performing ? "default" : "secondary"}>
+                      {videoData.analytics_summary.performance_indicators?.is_high_performing ? "Yes" : "No"}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded border">
+                    <span className="text-sm">Viral Potential</span>
+                    <Badge variant={videoData.analytics_summary.performance_indicators?.is_viral_potential ? "default" : "secondary"}>
+                      {videoData.analytics_summary.performance_indicators?.is_viral_potential ? "Yes" : "No"}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 rounded border">
+                    <span className="text-sm">High Engagement</span>
+                    <Badge variant={videoData.analytics_summary.performance_indicators?.is_high_engagement ? "default" : "secondary"}>
+                      {videoData.analytics_summary.performance_indicators?.is_high_engagement ? "Yes" : "No"}
+                    </Badge>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded border">
-                  <span className="text-sm">Viral Potential</span>
-                  <Badge variant={videoData.analytics_summary.performance_indicators.is_viral_potential ? "default" : "secondary"}>
-                    {videoData.analytics_summary.performance_indicators.is_viral_potential ? "Yes" : "No"}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between p-2 rounded border">
-                  <span className="text-sm">High Engagement</span>
-                  <Badge variant={videoData.analytics_summary.performance_indicators.is_high_engagement ? "default" : "secondary"}>
-                    {videoData.analytics_summary.performance_indicators.is_high_engagement ? "Yes" : "No"}
-                  </Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Engagement Breakdown */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Activity className="w-5 h-5" />
-                Engagement Breakdown
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Likes</span>
-                  <span className="text-sm font-medium">{videoData.analytics_summary.engagement_breakdown.likes_percentage}%</span>
+          {videoData.analytics_summary && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="w-5 h-5" />
+                  Engagement Breakdown
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Likes</span>
+                    <span className="text-sm font-medium">{videoData.analytics_summary.engagement_breakdown?.likes_percentage || 0}%</span>
+                  </div>
+                  <Progress value={videoData.analytics_summary.engagement_breakdown?.likes_percentage || 0} className="h-2" />
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Comments</span>
+                    <span className="text-sm font-medium">{videoData.analytics_summary.engagement_breakdown?.comments_percentage || 0}%</span>
+                  </div>
+                  <Progress value={videoData.analytics_summary.engagement_breakdown?.comments_percentage || 0} className="h-2" />
                 </div>
-                <Progress value={videoData.analytics_summary.engagement_breakdown.likes_percentage} className="h-2" />
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Comments</span>
-                  <span className="text-sm font-medium">{videoData.analytics_summary.engagement_breakdown.comments_percentage}%</span>
+                <div className="pt-3 border-t">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">{videoData.analytics_summary.total_engagement || 0}</div>
+                    <div className="text-xs text-muted-foreground">Total Engagement</div>
+                  </div>
                 </div>
-                <Progress value={videoData.analytics_summary.engagement_breakdown.comments_percentage} className="h-2" />
-              </div>
-              
-              <div className="pt-3 border-t">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">{videoData.analytics_summary.total_engagement}</div>
-                  <div className="text-xs text-muted-foreground">Total Engagement</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Content Analysis */}
           <Card>
@@ -378,17 +391,17 @@ export default function VideoDetailPage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm">Content Type</span>
-                  <Badge variant="outline">{videoData.content_type}</Badge>
+                  <Badge variant="outline">{videoData.content_type || "Not specified"}</Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm">Growth Potential</span>
                   <Badge className={getGrowthColor(videoData.growth_potential)}>
-                    {videoData.growth_potential}
+                    {videoData.growth_potential || "Not specified"}
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm">Category ID</span>
-                  <Badge variant="outline">{videoData.category_id}</Badge>
+                  <Badge variant="outline">{videoData.category_id || "Not specified"}</Badge>
                 </div>
               </div>
             </CardContent>
@@ -404,12 +417,16 @@ export default function VideoDetailPage() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {videoData.tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary" className="flex items-center gap-1">
-                    <Tag className="w-3 h-3" />
-                    {tag}
-                  </Badge>
-                ))}
+                {videoData.tags && videoData.tags.length > 0 ? (
+                  videoData.tags.map((tag, index) => (
+                    <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                      <Tag className="w-3 h-3" />
+                      {tag}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-muted-foreground">No tags available</p>
+                )}
               </div>
             </CardContent>
           </Card>
