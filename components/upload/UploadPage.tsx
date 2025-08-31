@@ -2,6 +2,7 @@
 
 import { useUploadPage } from "@/hooks/upload/useUploadPage"
 import { useUploadHandlers } from "@/hooks/upload/useUploadHandlers"
+import useUpdateVideo from "@/hooks/upload/useUpdateVideo"
 import { UploadStepsIndicator } from "@/components/upload/UploadStepsIndicator"
 import { CelebrationModal } from "@/components/upload/ui/CelebrationModal"
 import { UploadSection } from "@/components/upload/sections/UploadSection"
@@ -13,6 +14,7 @@ import { PreviewSection } from "@/components/upload/sections/PreviewSection"
 
 export default function UploadPage() {
   const uploadPageData = useUploadPage()
+  const { updateVideo, isUpdating: isUpdatingVideo, error: updateError } = useUpdateVideo()
   
   const {
     state,
@@ -86,6 +88,25 @@ export default function UploadPage() {
     privacyError,
     uploadError,
   })
+
+  const handleUpdateVideo = async (updates: any) => {
+    const videoId = state.uploadedVideoData?.id || getCurrentVideoId()
+    if (!videoId) {
+      toast({
+        title: "Error",
+        description: "No video ID found. Please try uploading again.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      await updateVideo(videoId, updates)
+    } catch (error) {
+      console.error('Failed to update video:', error)
+      // Error handling is done in the useUpdateVideo hook
+    }
+  }
 
   // Show loading screen while checking YouTube credentials
   if (credentialChecking || !shouldAllowAccess) {
@@ -207,6 +228,8 @@ export default function UploadPage() {
               getCurrentVideoId={getCurrentVideoId}
               getVideoPreview={getVideoPreview}
               fetchPlaylists={fetchPlaylists}
+              onUpdateVideo={handleUpdateVideo}
+              isUpdatingVideo={isUpdatingVideo}
             />
           )}
 

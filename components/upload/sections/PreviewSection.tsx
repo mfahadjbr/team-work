@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Eye, RefreshCw, AlertCircle, ImageIcon, Globe, Lock, Users, Play, Sparkles, FileText, Clock } from "lucide-react"
+import { Eye, RefreshCw, AlertCircle, ImageIcon, Globe, Lock, Users, Play, Sparkles, FileText, Clock, Edit3 } from "lucide-react"
 import { UploadState, UploadHandlers } from "@/types/upload"
+import { EditModal } from "@/components/upload/ui/EditModal"
+import { UpdateVideoRequest } from "@/hooks/upload/useUpdateVideo"
 
 interface PreviewSectionProps {
   state: UploadState
@@ -22,6 +24,8 @@ interface PreviewSectionProps {
   getCurrentVideoId: () => string | null
   getVideoPreview: (videoId: string) => Promise<void>
   fetchPlaylists: () => Promise<any>
+  onUpdateVideo?: (updates: UpdateVideoRequest) => Promise<void>
+  isUpdatingVideo?: boolean
 }
 
 export function PreviewSection({
@@ -37,8 +41,12 @@ export function PreviewSection({
   uploadedVideoData,
   getCurrentVideoId,
   getVideoPreview,
-  fetchPlaylists
+  fetchPlaylists,
+  onUpdateVideo,
+  isUpdatingVideo = false
 }: PreviewSectionProps) {
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   const privacyOptions = [
     { value: 'public' as const, label: 'Public', description: 'Anyone can search for and view', icon: Globe },
@@ -71,16 +79,43 @@ export function PreviewSection({
     }
   }
 
+  const handleEditVideo = async (updates: UpdateVideoRequest) => {
+    if (onUpdateVideo) {
+      await onUpdateVideo(updates)
+      
+      // Update local state with the new values
+      if (updates.title) {
+        updateState({ customTitle: updates.title })
+      }
+      if (updates.description) {
+        updateState({ customDescription: updates.description })
+      }
+      if (updates.timestamps) {
+        updateState({ customTimestamps: updates.timestamps })
+      }
+      if (updates.privacy_status) {
+        updateState({ selectedPrivacy: updates.privacy_status as 'public' | 'private' | 'unlisted' })
+      }
+      if (updates.playlist_name) {
+        // Find the playlist by name and update selectedPlaylist
+        const playlist = playlists.find(p => p.name === updates.playlist_name)
+        if (playlist) {
+          updateState({ selectedPlaylist: playlist })
+        }
+      }
+    }
+  }
+
   return (
-    <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/30">
+    <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/30">
       <CardHeader className="pb-6">
-        <CardTitle className="flex items-center gap-3 text-2xl lg:text-3xl font-bold text-blue-900">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <Eye className="h-6 w-6 text-blue-600" />
+        <CardTitle className="flex items-center gap-3 text-2xl lg:text-3xl font-bold text-green-900">
+          <div className="p-2 bg-green-100 rounded-lg">
+            <Eye className="h-6 w-6 text-green-600" />
           </div>
           {state.previewStage === 1 ? "Review Content" : state.previewStage === 2 ? "Settings" : "Final Preview"}
         </CardTitle>
-        <p className="text-lg text-blue-700 mt-2">
+        <p className="text-lg text-green-700 mt-2">
           {state.previewStage === 1 ? "Review your generated content" : 
            state.previewStage === 2 ? "Configure privacy and playlist settings" : 
            "Final review before upload"}
@@ -93,23 +128,23 @@ export function PreviewSection({
               <div
                 className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
                   state.previewStage === stageNum
-                    ? "border-blue-600 bg-blue-600 text-white shadow-lg scale-110"
+                    ? "border-green-600 bg-green-600 text-white shadow-lg scale-110"
                     : state.previewStage > stageNum
                       ? "border-green-500 bg-green-500 text-white shadow-md"
-                      : "border-blue-200 bg-white text-blue-400"
+                      : "border-green-200 bg-white text-green-400"
                 }`}
               >
                 <span className="text-sm font-semibold">{stageNum}</span>
               </div>
               <span className={`ml-3 text-sm font-medium ${
-                state.previewStage === stageNum ? "text-blue-900" : 
-                state.previewStage > stageNum ? "text-green-700" : "text-blue-600"
+                state.previewStage === stageNum ? "text-green-900" : 
+                state.previewStage > stageNum ? "text-green-700" : "text-green-600"
               }`}>
                 {stageNum === 1 ? "Content" : stageNum === 2 ? "Settings" : "Preview"}
               </span>
               {stageNum < 3 && (
                 <div className={`h-1 flex-1 mx-4 rounded-full transition-all duration-300 ${
-                  state.previewStage > stageNum ? "bg-green-500" : "bg-blue-200"
+                  state.previewStage > stageNum ? "bg-green-500" : "bg-green-200"
                 }`} />
               )}
             </div>
@@ -189,11 +224,21 @@ export function PreviewSection({
               >
                 Back to Thumbnails
               </Button>
-              <Button 
-                onClick={() => handleStageNavigation(2)}
-              >
-                Continue to Settings
-              </Button>
+              <div className="flex gap-3">
+                <Button 
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400"
+                >
+                  <Edit3 className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+                <Button 
+                  onClick={() => handleStageNavigation(2)}
+                >
+                  Continue to Settings
+                </Button>
+              </div>
             </div>
           </>
         )}
@@ -305,11 +350,21 @@ export function PreviewSection({
               >
                 Back to Content
               </Button>
-              <Button 
-                onClick={() => handleStageNavigation(3)}
-              >
-                Continue to Preview
-              </Button>
+              <div className="flex gap-3">
+                <Button 
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400"
+                >
+                  <Edit3 className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+                <Button 
+                  onClick={() => handleStageNavigation(3)}
+                >
+                  Continue to Preview
+                </Button>
+              </div>
             </div>
           </>
         )}
@@ -370,11 +425,11 @@ export function PreviewSection({
                     {/* Video Title */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-blue-600" />
+                        <Sparkles className="w-5 h-5 text-green-600" />
                         Video Title
                       </Label>
-                      <div className="p-6 border rounded-xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm">
-                        <h3 className="font-semibold text-xl text-blue-900">
+                      <div className="p-6 border rounded-xl bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm">
+                        <h3 className="font-semibold text-xl text-green-900">
                           {previewData?.title || state.content.selectedTitle || state.customTitle || 'No title generated'}
                         </h3>
                       </div>
@@ -383,23 +438,23 @@ export function PreviewSection({
                     {/* Thumbnail */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <ImageIcon className="w-5 h-5 text-blue-600" />
+                        <ImageIcon className="w-5 h-5 text-green-600" />
                         Video Thumbnail
                       </Label>
-                      <div className="p-6 border rounded-xl bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm">
+                      <div className="p-6 border rounded-xl bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm">
                         {(previewData?.thumbnail_url || state.content.selectedThumbnail) ? (
                           <div className="w-full max-w-md mx-auto">
                             <img
                               src={previewData?.thumbnail_url || state.content.selectedThumbnail}
                               alt="Video thumbnail"
-                              className="w-full h-auto rounded-xl border-2 border-blue-200/30 shadow-lg"
+                              className="w-full h-auto rounded-xl border-2 border-green-200/30 shadow-lg"
                             />
                           </div>
                         ) : (
                           <div className="w-full max-w-md mx-auto h-48 border-2 border-dashed border-blue-200/30 rounded-xl flex items-center justify-center text-muted-foreground bg-blue-50/20">
                             <div className="text-center">
-                              <ImageIcon className="w-12 h-12 mx-auto mb-2 text-blue-400" />
-                              <span className="text-blue-600">No thumbnail available</span>
+                              <ImageIcon className="w-12 h-12 mx-auto mb-2 text-green-400" />
+                              <span className="text-green-600">No thumbnail available</span>
                             </div>
                           </div>
                         )}
@@ -409,18 +464,18 @@ export function PreviewSection({
                     {/* Description */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-blue-600" />
+                        <FileText className="w-5 h-5 text-green-600" />
                         Video Description
                       </Label>
-                      <div className="border rounded-xl p-6 bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm max-h-60 overflow-y-auto">
+                      <div className="border rounded-xl p-6 bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm max-h-60 overflow-y-auto">
                         {(previewData?.description || state.content.description || state.customDescription) ? (
-                          <pre className="text-sm whitespace-pre-wrap leading-relaxed text-blue-900">
+                          <pre className="text-sm whitespace-pre-wrap leading-relaxed text-green-900">
                             {previewData?.description || state.content.description || state.customDescription}
                           </pre>
                         ) : (
                           <div className="text-center py-8">
-                            <FileText className="w-8 h-8 mx-auto mb-2 text-blue-400" />
-                            <p className="text-sm text-blue-600 italic">No description generated</p>
+                            <FileText className="w-8 h-8 mx-auto mb-2 text-green-400" />
+                            <p className="text-sm text-green-600 italic">No description generated</p>
                           </div>
                         )}
                       </div>
@@ -429,26 +484,26 @@ export function PreviewSection({
                     {/* Timestamps */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-blue-600" />
+                        <Clock className="w-5 h-5 text-green-600" />
                         Video Timestamps
                       </Label>
-                      <div className="border rounded-xl p-6 bg-gradient-to-r from-blue-50/30 to-indigo-50/30 border-blue-200/30 shadow-sm max-h-60 overflow-y-auto">
+                      <div className="border rounded-xl p-6 bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm max-h-60 overflow-y-auto">
                         {(previewData?.timestamps || state.content.timestamps || state.customTimestamps) ? (
-                          <pre className="text-sm whitespace-pre-wrap font-mono leading-relaxed text-blue-900">
+                          <pre className="text-sm whitespace-pre-wrap font-mono leading-relaxed text-green-900">
                             {previewData?.timestamps || state.content.timestamps || state.customTimestamps}
                           </pre>
                         ) : (
                           <div className="text-center py-8">
-                            <Clock className="w-8 h-8 mx-auto mb-2 text-blue-400" />
-                            <p className="text-sm text-blue-600 italic">No timestamps generated</p>
+                            <Clock className="w-8 h-8 mx-auto mb-2 text-green-400" />
+                            <p className="text-sm text-green-600 italic">No timestamps generated</p>
                           </div>
                         )}
                       </div>
                     </div>
 
                                         {/* Summary Info */}
-                    <div className="border rounded-xl p-6 bg-gradient-to-r from-blue-50/50 to-indigo-50/50 border-blue-200/30 shadow-sm">
-                      <h3 className="text-xl font-semibold mb-6 text-blue-900 flex items-center gap-2">
+                    <div className="border rounded-xl p-6 bg-gradient-to-r from-green-50/50 to-indigo-50/50 border-green-200/30 shadow-sm">
+                      <h3 className="text-xl font-semibold mb-6 text-green-900 flex items-center gap-2">
                         <Globe className="w-5 h-5" />
                         Upload Settings
                       </h3>
@@ -473,8 +528,8 @@ export function PreviewSection({
                           <div className="flex items-center gap-2">
                             {state.selectedPlaylist ? (
                               <div className="flex items-center gap-2">
-                                <Play className="w-4 h-4 text-blue-600" />
-                                <span className="text-sm font-medium text-blue-900">{state.selectedPlaylist.name}</span>
+                                <Play className="w-4 h-4 text-green-600" />
+                                <span className="text-sm font-medium text-green-900">{state.selectedPlaylist.name}</span>
                               </div>
                             ) : (
                               <div className="flex items-center gap-2 text-muted-foreground">
@@ -487,8 +542,20 @@ export function PreviewSection({
                       </div>
                     </div>
 
-                    {/* Upload Button */}
-                    <div className="pt-6">
+                    {/* Edit and Upload Buttons */}
+                    <div className="pt-6 space-y-4">
+                      {/* Edit Button */}
+                      <Button
+                        onClick={() => setIsEditModalOpen(true)}
+                        variant="outline"
+                        className="w-full border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 font-medium py-3 px-6 text-base"
+                        disabled={state.isUploading}
+                      >
+                        <Edit3 className="w-4 h-4 mr-2" />
+                        Edit Video Details
+                      </Button>
+
+                      {/* Upload Button */}
                       <Button
                         onClick={() => handlers.handlePublish('public')}
                         className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
@@ -526,6 +593,15 @@ export function PreviewSection({
         )}
 
       </CardContent>
+
+      {/* Edit Modal */}
+      <EditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        state={state}
+        onSave={handleEditVideo}
+        isSaving={isUpdatingVideo}
+      />
     </Card>
   )
 }
