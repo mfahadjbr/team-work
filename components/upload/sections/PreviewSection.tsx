@@ -9,6 +9,7 @@ import { Eye, RefreshCw, AlertCircle, ImageIcon, Globe, Lock, Users, Play, Spark
 import { UploadState, UploadHandlers } from "@/types/upload"
 import { EditModal } from "@/components/upload/ui/EditModal"
 import { UpdateVideoRequest } from "@/hooks/upload/useUpdateVideo"
+import { useChannelPlaylists } from "@/hooks/dashboard/playlists/useChannelPlaylists"
 
 interface PreviewSectionProps {
   state: UploadState
@@ -17,13 +18,9 @@ interface PreviewSectionProps {
   previewData: any
   previewLoading: boolean
   previewError: string | null
-  playlists: any[]
-  playlistsLoading: boolean
-  playlistsError: string | null
   uploadedVideoData: any
   getCurrentVideoId: () => string | null
   getVideoPreview: (videoId: string) => Promise<void>
-  fetchPlaylists: () => Promise<any>
   onUpdateVideo?: (updates: UpdateVideoRequest) => Promise<void>
   isUpdatingVideo?: boolean
 }
@@ -35,18 +32,17 @@ export function PreviewSection({
   previewData,
   previewLoading,
   previewError,
-  playlists,
-  playlistsLoading,
-  playlistsError,
   uploadedVideoData,
   getCurrentVideoId,
   getVideoPreview,
-  fetchPlaylists,
   onUpdateVideo,
   isUpdatingVideo = false
 }: PreviewSectionProps) {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  
+  // Use the channel playlists hook directly
+  const { playlists, isLoading: playlistsLoading, error: playlistsError, fetchChannelPlaylists } = useChannelPlaylists()
 
   const privacyOptions = [
     { value: 'public' as const, label: 'Public', description: 'Anyone can search for and view', icon: Globe },
@@ -75,7 +71,7 @@ export function PreviewSection({
     
     // Load playlists when entering stage 2
     if (stage === 2) {
-      fetchPlaylists()
+      fetchChannelPlaylists()
     }
   }
 
@@ -282,7 +278,7 @@ export function PreviewSection({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={fetchPlaylists}
+                  onClick={fetchChannelPlaylists}
                   disabled={playlistsLoading}
                   className="gap-2"
                 >
@@ -320,9 +316,9 @@ export function PreviewSection({
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="font-medium text-sm">{playlist.name}</div>
-                          <div className="text-xs text-muted-foreground">
+                          {/* <div className="text-xs text-muted-foreground">
                             Playlist ID: {playlist.id}
-                          </div>
+                          </div> */}
                         </div>
                         <Badge variant="outline" className="text-xs">
                           Available
@@ -548,7 +544,7 @@ export function PreviewSection({
                       <Button
                         onClick={() => setIsEditModalOpen(true)}
                         variant="outline"
-                        className="w-full border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 font-medium py-3 px-6 text-base"
+                        className="w-full border-green-300 cursor-pointer text-green-700 hover:bg-green-50 hover:border-green-400 font-medium py-3 px-6 text-base"
                         disabled={state.isUploading}
                       >
                         <Edit3 className="w-4 h-4 mr-2" />
@@ -558,14 +554,22 @@ export function PreviewSection({
                       {/* Upload Button */}
                       <Button
                         onClick={() => handlers.handlePublish('public')}
-                        className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                        className="w-full bg-gradient-to-r cursor-pointer from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                         disabled={state.isUploading}
                         size="lg"
                       >
-                        <Globe className="w-5 h-5 mr-3" />
-                        {state.isUploading ? 'Uploading to YouTube...' : 'Upload to YouTube'}
+                        {state.isUploading ? (
+                          <>
+                            <RefreshCw className="w-5 h-5 mr-3 animate-spin" />
+                            Uploading to YouTube...
+                          </>
+                        ) : (
+                          <>
+                            <Globe className="w-5 h-5 mr-3" />
+                            Upload to YouTube
+                          </>
+                        )}
                       </Button>
-                      
                       {state.isUploading && (
                         <div className="mt-4 text-center">
                           <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">

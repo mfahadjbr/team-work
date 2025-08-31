@@ -16,6 +16,7 @@ interface TitleSectionProps {
   titleLoading: boolean
   uploadedVideoData: any
   saveTitle: (videoId: string, title: string) => Promise<any>
+  isSavingTitle?: boolean
 }
 
 export function TitleSection({
@@ -25,7 +26,8 @@ export function TitleSection({
   generatedTitles,
   titleLoading,
   uploadedVideoData,
-  saveTitle
+  saveTitle,
+  isSavingTitle = false
 }: TitleSectionProps) {
   const [customTitle, setCustomTitle] = useState("")
 
@@ -64,17 +66,8 @@ export function TitleSection({
           disabled={state.isProcessing || titleLoading} 
           className="w-full"
         >
-          {state.isProcessing || titleLoading ? (
-            <>
-              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-              Generating Titles...
-            </>
-          ) : (
-            <>
-              <Sparkles className="w-4 h-4 mr-2" />
-              Generate Title with AI
-            </>
-          )}
+          <Sparkles className="w-4 h-4 mr-2" />
+          Generate Title with AI
         </Button>
 
         {(state.content.titles.length > 0 || generatedTitles.length > 0) && (
@@ -124,9 +117,17 @@ export function TitleSection({
         {(state.content.selectedTitle || customTitle) && (
           <Button 
             onClick={handleSaveAndNext}
+            disabled={isSavingTitle}
             className="w-full"
           >
-            Save & Next: Generate Description
+            {isSavingTitle ? (
+              <>
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                Saving Title...
+              </>
+            ) : (
+              'Save & Next: Generate Description'
+            )}
           </Button>
         )}
       </CardContent>

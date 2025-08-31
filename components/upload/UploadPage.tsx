@@ -108,6 +108,37 @@ export default function UploadPage() {
     }
   }
 
+  // Wrapper functions to handle saving states
+  const handleSaveTitle = async (videoId: string, title: string) => {
+    updateState({ isSavingTitle: true })
+    try {
+      const result = await saveTitle(videoId, title)
+      return result
+    } finally {
+      updateState({ isSavingTitle: false })
+    }
+  }
+
+  const handleSaveDescription = async (videoId: string, description: string) => {
+    updateState({ isSavingDescription: true })
+    try {
+      const result = await saveDescription(videoId, description)
+      return result
+    } finally {
+      updateState({ isSavingDescription: false })
+    }
+  }
+
+  const handleSaveTimestamps = async (videoId: string, timestamps: string) => {
+    updateState({ isSavingTimestamps: true })
+    try {
+      const result = await saveTimestamps(videoId, timestamps)
+      return result
+    } finally {
+      updateState({ isSavingTimestamps: false })
+    }
+  }
+
   // Show loading screen while checking YouTube credentials
   if (credentialChecking || !shouldAllowAccess) {
     return (
@@ -170,7 +201,8 @@ export default function UploadPage() {
               generatedTitles={generatedTitles}
               titleLoading={titleLoading}
               uploadedVideoData={state.uploadedVideoData}
-              saveTitle={saveTitle}
+              saveTitle={handleSaveTitle}
+              isSavingTitle={state.isSavingTitle}
             />
           )}
 
@@ -183,8 +215,9 @@ export default function UploadPage() {
               generatedDescription={generatedDescription}
               descriptionLoading={descriptionLoading}
               uploadedVideoData={state.uploadedVideoData}
-              saveDescription={saveDescription}
+              saveDescription={handleSaveDescription}
               regenerateDescriptionWithTemplate={regenerateDescriptionWithTemplate}
+              isSavingDescription={state.isSavingDescription}
             />
           )}
 
@@ -197,7 +230,8 @@ export default function UploadPage() {
               generatedTimestamps={generatedTimestamps}
               timestampsLoading={timestampsLoading}
               uploadedVideoData={state.uploadedVideoData}
-              saveTimestamps={saveTimestamps}
+              saveTimestamps={handleSaveTimestamps}
+              isSavingTimestamps={state.isSavingTimestamps}
             />
           )}
 
@@ -221,13 +255,9 @@ export default function UploadPage() {
               previewData={previewData}
               previewLoading={previewLoading}
               previewError={previewError}
-              playlists={playlists}
-              playlistsLoading={playlistsLoading}
-              playlistsError={playlistsError}
               uploadedVideoData={state.uploadedVideoData}
               getCurrentVideoId={getCurrentVideoId}
               getVideoPreview={getVideoPreview}
-              fetchPlaylists={fetchPlaylists}
               onUpdateVideo={handleUpdateVideo}
               isUpdatingVideo={isUpdatingVideo}
             />

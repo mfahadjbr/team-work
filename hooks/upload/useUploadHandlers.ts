@@ -289,6 +289,9 @@ export const useUploadHandlers = ({
 
       resetYouTubeUploadState()
 
+      // Set the main upload state to loading
+      updateState({ isUploading: true })
+
       toast({
         title: "Uploading to YouTube...",
         description: "Please wait while we upload your video. This may take a few minutes.",
@@ -303,11 +306,16 @@ export const useUploadHandlers = ({
 
       // Reset states
       updateState({
-        selectedPlaylist: null
+        selectedPlaylist: null,
+        isUploading: false
       })
       
     } catch (error) {
       console.error('YouTube upload failed:', error)
+      
+      // Reset loading state on error
+      updateState({ isUploading: false })
+      
       toast({
         title: "Upload Failed",
         description: uploadError || "Failed to upload video to YouTube",

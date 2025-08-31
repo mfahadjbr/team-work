@@ -91,17 +91,8 @@ export function ThumbnailSection({
           disabled={state.isProcessing || thumbnailsLoading} 
           className="w-full"
         >
-          {state.isProcessing || thumbnailsLoading ? (
-            <>
-              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-              Generating 5 Thumbnails...
-            </>
-          ) : (
-            <>
-              <ImageIcon className="w-4 h-4 mr-2" />
-              Generate 5 Thumbnails with AI
-            </>
-          )}
+          <ImageIcon className="w-4 h-4 mr-2" />
+          Generate 5 Thumbnails with AI
         </Button>
 
         {(state.content.thumbnails.length > 0 || generatedThumbnails.length > 0) && (

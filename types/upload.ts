@@ -33,6 +33,9 @@ export interface UploadState {
   saveButtonText: string
   isSaving: boolean
   uploadedVideoData: any
+  isSavingTitle: boolean
+  isSavingDescription: boolean
+  isSavingTimestamps: boolean
 }
 
 export interface UploadHandlers {

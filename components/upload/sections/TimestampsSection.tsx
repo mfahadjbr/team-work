@@ -16,6 +16,7 @@ interface TimestampsSectionProps {
   timestampsLoading: boolean
   uploadedVideoData: any
   saveTimestamps: (videoId: string, timestamps: string) => Promise<any>
+  isSavingTimestamps?: boolean
 }
 
 export function TimestampsSection({
@@ -25,7 +26,8 @@ export function TimestampsSection({
   generatedTimestamps,
   timestampsLoading,
   uploadedVideoData,
-  saveTimestamps
+  saveTimestamps,
+  isSavingTimestamps = false
 }: TimestampsSectionProps) {
   const [customTimestamps, setCustomTimestamps] = useState("")
 
@@ -55,17 +57,8 @@ export function TimestampsSection({
           disabled={state.isProcessing || timestampsLoading} 
           className="w-full"
         >
-          {state.isProcessing || timestampsLoading ? (
-            <>
-              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-              Generating Timestamps...
-            </>
-          ) : (
-            <>
-              <Clock className="w-4 h-4 mr-2" />
-              Generate Timestamps with AI
-            </>
-          )}
+          <Clock className="w-4 h-4 mr-2" />
+          Generate Timestamps with AI
         </Button>
 
         {(state.content.timestamps || generatedTimestamps) && (
@@ -94,10 +87,17 @@ export function TimestampsSection({
                       console.error('Failed to save timestamps:', error)
                     }
                   }}
-                  disabled={state.isProcessing || timestampsLoading}
+                  disabled={isSavingTimestamps}
                   className="sm:w-auto w-full bg-transparent"
                 >
-                  Save Timestamps
+                  {isSavingTimestamps ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Timestamps'
+                  )}
                 </Button>
               )}
             </div>
@@ -109,9 +109,17 @@ export function TimestampsSection({
         {(state.content.timestamps || generatedTimestamps || customTimestamps) && (
           <Button 
             onClick={handleSaveAndNext}
+            disabled={isSavingTimestamps}
             className="w-full"
           >
-            Save & Next: Generate Thumbnail
+            {isSavingTimestamps ? (
+              <>
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                Saving Timestamps...
+              </>
+            ) : (
+              'Save & Next: Generate Thumbnail'
+            )}
           </Button>
         )}
       </CardContent>

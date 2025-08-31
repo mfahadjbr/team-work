@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -33,6 +33,44 @@ export function Sidebar() {
   const [isPlaylistsOpen, setIsPlaylistsOpen] = useState(false)
   const { getYouTubeToken, refreshYouTubeToken, isLoading } = useTemp()
   const { playlists, isLoading: playlistsLoading } = useChannelPlaylists()
+  const playlistsRef = useRef<HTMLDivElement>(null)
+
+  // Close playlists dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (playlistsRef.current && !playlistsRef.current.contains(event.target as Node)) {
+        setIsPlaylistsOpen(false)
+      }
+    }
+
+    if (isPlaylistsOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isPlaylistsOpen])
+
+  // Auto-select first playlist when on playlists page without specific playlist
+  useEffect(() => {
+    if (pathname === '/dashboard/playlists' && playlists.length > 0) {
+      const urlParams = new URLSearchParams(window.location.search)
+      const playlistId = urlParams.get('id')
+      
+      if (!playlistId) {
+        // If no playlist is selected, automatically select the first one
+        const firstPlaylist = playlists[0]
+        if (firstPlaylist) {
+          window.history.replaceState(
+            null, 
+            '', 
+            `/dashboard/playlists?id=${firstPlaylist.id}`
+          )
+        }
+      }
+    }
+  }, [pathname, playlists])
 
   return (
     <>
@@ -76,10 +114,13 @@ export function Sidebar() {
               })}
 
               {/* YouTube Playlists Dropdown */}
-              <div className="space-y-4">
+              <div className="space-y-4" ref={playlistsRef}>
                 <Button
                   variant={pathname === '/dashboard/playlists' ? "secondary" : "ghost"}
-                  className="w-full justify-between h-12 px-3 cursor-pointer gap-3 mb-2"
+                  className={cn(
+                    "w-full justify-between h-12 px-3 cursor-pointer gap-3 mb-2",
+                    pathname === '/dashboard/playlists' && "bg-sidebar-accent text-sidebar-accent-foreground"
+                  )}
                   onClick={() => setIsPlaylistsOpen(!isPlaylistsOpen)}
                 >
                   <div className="flex items-center gap-4">
@@ -105,14 +146,15 @@ export function Sidebar() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className={cn(
-                              "w-full justify-start h-10 px-3 text-sm cursor-pointer mb-2",
-                              pathname === `/dashboard/playlists` && 
-                              "bg-sidebar-accent text-sidebar-accent-foreground"
-                            )}
+                                                         className={cn(
+                               "w-full justify-start h-10 px-3 text-sm cursor-pointer mb-2",
+                               pathname === `/dashboard/playlists?id=${playlist.id}` && 
+                               "bg-green-600 text-white hover:bg-green-700"
+                             )}
                             onClick={() => {
                               setIsMobileMenuOpen(false)
-                              setIsPlaylistsOpen(false)
+                              // Don't close the playlists dropdown when clicking on a playlist
+                              // This allows users to browse and select playlists
                             }}
                           >
                             <span className="truncate max-w-[180px]" title={playlist.name}>

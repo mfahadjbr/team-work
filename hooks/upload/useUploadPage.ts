@@ -125,6 +125,9 @@ export const useUploadPage = () => {
     saveButtonText: "Save Key",
     isSaving: false,
     uploadedVideoData: null,
+    isSavingTitle: false,
+    isSavingDescription: false,
+    isSavingTimestamps: false,
   })
 
   // Load video data from localStorage on component mount

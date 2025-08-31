@@ -17,6 +17,7 @@ interface DescriptionSectionProps {
   uploadedVideoData: any
   saveDescription: (videoId: string, description: string) => Promise<any>
   regenerateDescriptionWithTemplate: (videoId: string, template: string) => Promise<any>
+  isSavingDescription?: boolean
 }
 
 export function DescriptionSection({
@@ -27,7 +28,8 @@ export function DescriptionSection({
   descriptionLoading,
   uploadedVideoData,
   saveDescription,
-  regenerateDescriptionWithTemplate
+  regenerateDescriptionWithTemplate,
+  isSavingDescription = false
 }: DescriptionSectionProps) {
   const [customDescription, setCustomDescription] = useState("")
 
@@ -67,17 +69,8 @@ export function DescriptionSection({
           disabled={state.isProcessing || descriptionLoading} 
           className="w-full"
         >
-          {state.isProcessing || descriptionLoading ? (
-            <>
-              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-              Generating Description...
-            </>
-          ) : (
-            <>
-              <FileText className="w-4 h-4 mr-2" />
-              Generate Description with AI
-            </>
-          )}
+          <FileText className="w-4 h-4 mr-2" />
+          Generate Description with AI
         </Button>
 
         {(state.content.description || generatedDescription) && (
@@ -106,10 +99,17 @@ export function DescriptionSection({
                       console.error('Failed to save description:', error)
                     }
                   }}
-                  disabled={state.isProcessing || descriptionLoading}
+                  disabled={isSavingDescription}
                   className="sm:w-auto w-full bg-transparent"
                 >
-                  Save Description
+                  {isSavingDescription ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save Description'
+                  )}
                 </Button>
               )}
             </div>
@@ -154,9 +154,17 @@ export function DescriptionSection({
         {(state.content.description || generatedDescription || customDescription) && (
           <Button 
             onClick={handleSaveAndNext}
+            disabled={isSavingDescription}
             className="w-full"
           >
-            Save & Next: Generate Timestamps
+            {isSavingDescription ? (
+              <>
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                Saving Description...
+              </>
+            ) : (
+              'Save & Next: Generate Timestamps'
+            )}
           </Button>
         )}
       </CardContent>
