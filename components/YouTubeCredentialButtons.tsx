@@ -88,7 +88,7 @@ export default function YouTubeCredentialButtons() {
         </div>
         
         {message && (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-md text-green-700 dark:text-green-300">
+          <div className="p-4 bg-profit/10 rounded-md crypto-profit crypto-glow">
             {message}
           </div>
         )}

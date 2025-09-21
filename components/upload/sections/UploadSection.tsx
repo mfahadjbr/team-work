@@ -26,17 +26,17 @@ export const UploadSection = ({
   downloadError 
 }: UploadSectionProps) => {
   return (
-    <Card>
+    <Card className="crypto-card crypto-hover-glow">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
-          <Upload className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl crypto-text-primary">
+          <Upload className="h-5 w-5 crypto-profit" />
           Upload Your Video
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Gemini API Key */}
         <div className="space-y-2">
-          <Label htmlFor="gemini-key">Gemini API Key</Label>
+          <Label htmlFor="gemini-key" className="crypto-text-primary">Gemini API Key</Label>
           <div className="flex flex-col sm:flex-row gap-2">
             <Input
               id="gemini-key"
@@ -44,12 +44,12 @@ export const UploadSection = ({
               placeholder="Enter your Gemini API key"
               value={state.geminiApiKey}
               onChange={(e) => updateState({ geminiApiKey: e.target.value })}
-              className="flex-1"
+              className="flex-1 crypto-input"
             />
             <Button
               onClick={handlers.handleSaveApiKey}
               disabled={!state.geminiApiKey || state.isSaving}
-              className="sm:w-auto w-full"
+              className="sm:w-auto w-full crypto-button-primary"
             >
               {state.saveButtonText}
             </Button>
@@ -58,10 +58,10 @@ export const UploadSection = ({
 
         {/* Upload Method Toggle */}
         <div className="space-y-4">
-          <Label>Choose Upload Method</Label>
+          <Label className="crypto-text-primary">Choose Upload Method</Label>
           <div className="flex gap-2 p-1 bg-muted rounded-lg">
             <Button
-              variant={state.uploadMethod === "file" ? "default" : "ghost"}
+              variant={state.uploadMethod === "file" ? "crypto" : "cryptoGhost"}
               size="sm"
               onClick={() => updateState({ uploadMethod: "file" })}
               className="flex-1"
@@ -70,7 +70,7 @@ export const UploadSection = ({
               Upload File
             </Button>
             <Button
-              variant={state.uploadMethod === "url" ? "default" : "ghost"}
+              variant={state.uploadMethod === "url" ? "crypto" : "cryptoGhost"}
               size="sm"
               onClick={() => updateState({ uploadMethod: "url" })}
               className="flex-1"
@@ -84,9 +84,9 @@ export const UploadSection = ({
         {/* File Upload Section */}
         {state.uploadMethod === "file" && (
           <div className="space-y-4">
-            <Label htmlFor="video-upload">Upload Video File</Label>
-            <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 lg:p-8 text-center">
-              <Upload className="mx-auto h-8 w-8 lg:h-12 lg:w-12 text-muted-foreground mb-4" />
+            <Label htmlFor="video-upload" className="crypto-text-primary">Upload Video File</Label>
+            <div className="border-2 border-dashed border-primary/25 rounded-lg p-6 lg:p-8 text-center crypto-glow">
+              <Upload className="mx-auto h-8 w-8 lg:h-12 lg:w-12 crypto-text-tertiary mb-4" />
               <Input
                 id="video-upload"
                 type="file"
@@ -96,10 +96,10 @@ export const UploadSection = ({
                 disabled={state.isUploading || videoDownloading}
               />
               <Label htmlFor="video-upload" className="cursor-pointer">
-                <div className="text-base lg:text-lg font-medium mb-2">
+                <div className="text-base lg:text-lg font-medium mb-2 crypto-text-primary">
                   Drop your video here or click to browse
                 </div>
-                <div className="text-sm text-muted-foreground">Supports MP4, MOV, AVI, WMV (Max: 10GB)</div>
+                <div className="text-sm crypto-text-secondary">Supports MP4, MOV, AVI, WMV (Max: 10GB)</div>
               </Label>
             </div>
           </div>
@@ -108,7 +108,7 @@ export const UploadSection = ({
         {/* YouTube URL Section */}
         {state.uploadMethod === "url" && (
           <div className="space-y-4">
-            <Label htmlFor="youtube-url">YouTube Video URL</Label>
+            <Label htmlFor="youtube-url" className="crypto-text-primary">YouTube Video URL</Label>
             <div className="space-y-3">
               <div className="flex flex-col sm:flex-row gap-2">
                 <Input
@@ -117,22 +117,22 @@ export const UploadSection = ({
                   placeholder="https://www.youtube.com/watch?v=..."
                   value={state.youtubeUrl}
                   onChange={(e) => updateState({ youtubeUrl: e.target.value })}
-                  className="flex-1"
+                  className="flex-1 crypto-input"
                   disabled={videoDownloading || state.isUploading}
                 />
                 <Button
                   onClick={handlers.handleYouTubeUrlDownload}
                   disabled={!state.youtubeUrl.trim() || videoDownloading || state.isUploading}
-                  className="sm:w-auto w-full"
+                  className="sm:w-auto w-full crypto-button-primary"
                 >
                   Download Video
                 </Button>
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm crypto-text-secondary">
                 Enter a YouTube video URL to download and process it automatically
               </div>
               {downloadError && (
-                <div className="text-sm text-destructive bg-destructive/10 p-2 rounded">
+                <div className="text-sm crypto-loss bg-loss/10 p-2 rounded crypto-glow">
                   {downloadError}
                 </div>
               )}
@@ -144,20 +144,20 @@ export const UploadSection = ({
         {state.isUploading && (
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="truncate mr-2">Uploading {state.uploadedFile?.name}</span>
-              <span className="flex-shrink-0">{Math.round(state.uploadProgress)}%</span>
+              <span className="truncate mr-2 crypto-text-primary">Uploading {state.uploadedFile?.name}</span>
+              <span className="flex-shrink-0 crypto-text-secondary">{Math.round(state.uploadProgress)}%</span>
             </div>
-            <Progress value={state.uploadProgress} />
+            <Progress value={state.uploadProgress} className="crypto-progress" />
           </div>
         )}
 
         {videoDownloading && (
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="truncate mr-2">Downloading video from YouTube...</span>
-              <span className="flex-shrink-0">{Math.round(downloadProgress)}%</span>
+              <span className="truncate mr-2 crypto-text-primary">Downloading video from YouTube...</span>
+              <span className="flex-shrink-0 crypto-text-secondary">{Math.round(downloadProgress)}%</span>
             </div>
-            <Progress value={downloadProgress} />
+            <Progress value={downloadProgress} className="crypto-progress" />
           </div>
         )}
       </CardContent>

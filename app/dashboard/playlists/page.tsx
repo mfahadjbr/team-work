@@ -12,8 +12,8 @@ import Link from "next/link"
   
 // ===== Helpers =====
 const brand = {
-  primary: "#00C951",
-  primaryDark: "#00A843",
+  primary: "#FD1D1D",
+  primaryDark: "#FF6B35",
   grid: "#374151",
   axis: "#9CA3AF",
 }
@@ -26,11 +26,11 @@ const asNumber = (v: any, fallback = 0) => {
 const healthColor = (level?: string) => {
   switch ((level || "").toLowerCase()) {
     case "excellent":
-      return "text-green-600"
+      return "crypto-profit"
     case "good":
       return "text-blue-600"
     case "fair":
-      return "text-yellow-600"
+      return "crypto-text-secondary"
     case "poor":
       return "text-red-600"
     default:
@@ -41,11 +41,11 @@ const healthColor = (level?: string) => {
 const healthBadge = (level?: string) => {
   switch ((level || "").toLowerCase()) {
     case "excellent":
-      return "bg-green-100 text-green-800"
+      return "bg-profit/10 text-profit"
     case "good":
       return "bg-blue-100 text-blue-800"
     case "fair":
-      return "bg-yellow-100 text-yellow-800"
+      return "bg-brand-10 crypto-text-primary"
     case "poor":
       return "bg-red-100 text-red-800"
     default:
@@ -57,7 +57,7 @@ const growthIcon = (trend?: string) => {
   switch ((trend || "").toLowerCase()) {
     case "growing":
     case "increasing":
-      return <TrendingUp className="w-4 h-4 text-green-600" />
+      return <TrendingUp className="w-4 h-4 crypto-profit" />
     case "decreasing":
       return <TrendingDown className="w-4 h-4 text-red-600" />
     default:
@@ -203,10 +203,10 @@ function PlaylistData({ playlistId }: { playlistId: string }) {
               <Card>
                 <CardContent className="p-3 lg:p-4">
                   <div className="flex items-center gap-2 mb-2">
-              <div className="h-3 w-3 lg:h-4 lg:w-4 text-green-500" />
+              <div className="h-3 w-3 lg:h-4 lg:w-4 crypto-profit" />
                     <div className="text-xs lg:text-sm text-muted-foreground">Performance</div>
                   </div>
-                  <div className="text-lg lg:text-2xl font-bold text-green-600">
+                  <div className="text-lg lg:text-2xl font-bold crypto-profit">
               {asNumber(playlist.performance_score).toLocaleString()}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">Overall Score</div>

@@ -8,7 +8,7 @@ import { FAQSection } from "@/components/Home-Content/FAQ-Section"
 import { CTASection } from "@/components/Home-Content/CTA-Section"
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen crypto-gradient-bg">
       {/* Header */}
       <Header />
       {/* Hero Section */}

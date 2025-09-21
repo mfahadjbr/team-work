@@ -31,7 +31,7 @@ export default function PerformanceCharts({ contentCategoriesData, growthTrendsD
             config={{
               value: {
                 label: "Videos",
-                color: "#00C951",
+                color: "#FD1D1D",
               },
             }}
             className="h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
@@ -43,7 +43,7 @@ export default function PerformanceCharts({ contentCategoriesData, growthTrendsD
                   cx="50%"
                   cy="50%"
                   outerRadius={50}
-                  fill="#00C951"
+                  fill="#FD1D1D"
                   dataKey="value"
                   label={({ name, percent }) => `${name.split(" ")[0]} ${(percent * 100).toFixed(0)}%`}
                   labelLine={false}
@@ -70,11 +70,11 @@ export default function PerformanceCharts({ contentCategoriesData, growthTrendsD
             config={{
               totalViews: {
                 label: "Total Views",
-                color: "#00C951",
+                color: "#FD1D1D",
               },
               subscribers: {
                 label: "Subscribers",
-                color: "#00A843",
+                color: "#FF6B35",
               },
             }}
             className="h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
@@ -100,8 +100,8 @@ export default function PerformanceCharts({ contentCategoriesData, growthTrendsD
                   type="monotone"
                   dataKey="totalViews"
                   stackId="1"
-                  stroke="#00C951"
-                  fill="#00C951"
+                  stroke="#FD1D1D"
+                  fill="#FD1D1D"
                   fillOpacity={0.6}
                   name="Total Views"
                 />
@@ -109,8 +109,8 @@ export default function PerformanceCharts({ contentCategoriesData, growthTrendsD
                   type="monotone"
                   dataKey="subscribers"
                   stackId="2"
-                  stroke="#00A843"
-                  fill="#00A843"
+                  stroke="#FF6B35"
+                  fill="#FF6B35"
                   fillOpacity={0.8}
                   name="Subscribers"
                 />

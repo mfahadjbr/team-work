@@ -69,10 +69,10 @@ export function ThumbnailSection({
   })
 
   return (
-    <Card>
+    <Card className="crypto-card crypto-hover-glow">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
-          <ImageIcon className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl crypto-text-primary">
+          <ImageIcon className="h-5 w-5 crypto-profit" />
           Generate Thumbnail
         </CardTitle>
       </CardHeader>
@@ -89,7 +89,7 @@ export function ThumbnailSection({
             handlers.generateThumbnails()
           }} 
           disabled={state.isProcessing || thumbnailsLoading} 
-          className="w-full"
+          className="w-full crypto-button-primary"
         >
           <ImageIcon className="w-4 h-4 mr-2" />
           Generate 5 Thumbnails with AI
@@ -97,15 +97,15 @@ export function ThumbnailSection({
 
         {(state.content.thumbnails.length > 0 || generatedThumbnails.length > 0) && (
           <div className="space-y-3">
-            <Label>Select a thumbnail:</Label>
+            <Label className="crypto-text-primary">Select a thumbnail:</Label>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
               {(state.content.thumbnails.length > 0 ? state.content.thumbnails : generatedThumbnails).map((thumbnail, index) => (
                 <div
                   key={index}
-                  className={`relative aspect-video border-2 rounded-lg cursor-pointer transition-all hover:scale-105 ${
+                  className={`relative aspect-video border-2 rounded-lg cursor-pointer transition-all hover:scale-105 crypto-glow ${
                     state.content.selectedThumbnail === thumbnail
-                      ? "border-primary ring-2 ring-primary/20"
-                      : "border-muted hover:border-primary/50"
+                      ? "border-brand-primary ring-2 ring-brand-primary/20"
+                      : "border-primary hover:border-brand-primary/50"
                   }`}
                   onClick={() => handleThumbnailSelect(thumbnail)}
                 >
@@ -115,8 +115,8 @@ export function ThumbnailSection({
                     className="w-full h-full object-cover rounded-lg"
                   />
                   {state.content.selectedThumbnail === thumbnail && (
-                    <div className="absolute top-1 right-1 bg-primary rounded-full p-1">
-                      <CheckCircle className="w-5 h-5 lg:w-6 lg:h-6 text-primary bg-white rounded-full" />
+                    <div className="absolute top-1 right-1 bg-brand-primary rounded-full p-1 crypto-glow">
+                      <CheckCircle className="w-5 h-5 lg:w-6 lg:h-6 crypto-profit bg-white rounded-full" />
                     </div>
                   )}
                 </div>
@@ -127,7 +127,7 @@ export function ThumbnailSection({
               variant="outline"
               onClick={handlers.generateThumbnails}
               disabled={state.isProcessing || thumbnailsLoading}
-              className="w-full sm:w-auto bg-transparent"
+              className="w-full sm:w-auto crypto-button-secondary"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Regenerate 5 Thumbnails
@@ -136,19 +136,20 @@ export function ThumbnailSection({
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="custom-thumbnail">Or upload custom thumbnail:</Label>
+          <Label htmlFor="custom-thumbnail" className="crypto-text-primary">Or upload custom thumbnail:</Label>
           <Input
             id="custom-thumbnail"
             type="file"
             accept="image/*"
             onChange={handleCustomThumbnailUpload}
+            className="crypto-input"
           />
         </div>
 
         {state.content.selectedThumbnail && (
           <Button 
             onClick={handleSaveAndNext}
-            className="w-full"
+            className="w-full crypto-button-primary"
           >
             Save & Next: Preview
           </Button>

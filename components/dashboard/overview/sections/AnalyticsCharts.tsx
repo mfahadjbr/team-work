@@ -30,11 +30,11 @@ export default function AnalyticsCharts({ monthlyAnalyticsData, topVideosData }:
             config={{
               views: {
                 label: "Views",
-                color: "#00C951",
+                color: "#FD1D1D",
               },
               subscribers: {
                 label: "Subscribers",
-                color: "#00A843",
+                color: "#FF6B35",
               },
             }}
             className="h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
@@ -59,19 +59,19 @@ export default function AnalyticsCharts({ monthlyAnalyticsData, topVideosData }:
                 <Line
                   type="monotone"
                   dataKey="views"
-                  stroke="#00C951"
+                  stroke="#FD1D1D"
                   strokeWidth={2}
-                  dot={{ fill: "#00C951", strokeWidth: 2, r: 2 }}
-                  activeDot={{ r: 4, stroke: "#00C951", strokeWidth: 2 }}
+                  dot={{ fill: "#FD1D1D", strokeWidth: 2, r: 2 }}
+                  activeDot={{ r: 4, stroke: "#FD1D1D", strokeWidth: 2 }}
                   name="Views"
                 />
                 <Line
                   type="monotone"
                   dataKey="subscribers"
-                  stroke="#00A843"
+                  stroke="#FF6B35"
                   strokeWidth={2}
-                  dot={{ fill: "#00A843", strokeWidth: 2, r: 2 }}
-                  activeDot={{ r: 4, stroke: "#00A843", strokeWidth: 2 }}
+                  dot={{ fill: "#FF6B35", strokeWidth: 2, r: 2 }}
+                  activeDot={{ r: 4, stroke: "#FF6B35", strokeWidth: 2 }}
                   name="Subscribers"
                 />
               </LineChart>
@@ -90,7 +90,7 @@ export default function AnalyticsCharts({ monthlyAnalyticsData, topVideosData }:
             config={{
               views: {
                 label: "Views",
-                color: "#00C951",
+                color: "#FD1D1D",
               },
             }}
             className="h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
@@ -114,7 +114,7 @@ export default function AnalyticsCharts({ monthlyAnalyticsData, topVideosData }:
                   interval={0}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="views" fill="#00C951" name="Views" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="views" fill="#FD1D1D" name="Views" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>

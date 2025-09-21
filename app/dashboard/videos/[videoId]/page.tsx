@@ -42,9 +42,9 @@ const formatDate = (dateString: string) => {
 const getPerformanceColor = (level?: string) => {
   if (!level) return "text-gray-600 bg-gray-100"
   switch (level.toLowerCase()) {
-    case "excellent": return "text-green-600 bg-green-100"
+    case "excellent": return "crypto-profit bg-profit/10"
     case "good": return "text-blue-600 bg-blue-100"
-    case "average": return "text-yellow-600 bg-yellow-100"
+    case "average": return "crypto-text-secondary bg-brand-10"
     case "poor": return "text-red-600 bg-red-100"
     default: return "text-gray-600 bg-gray-100"
   }
@@ -53,8 +53,8 @@ const getPerformanceColor = (level?: string) => {
 const getEngagementColor = (level?: string) => {
   if (!level) return "text-gray-600 bg-gray-100"
   switch (level.toLowerCase()) {
-    case "high": return "text-green-600 bg-green-100"
-    case "medium": return "text-yellow-600 bg-yellow-100"
+    case "high": return "crypto-profit bg-profit/10"
+    case "medium": return "crypto-text-secondary bg-brand-10"
     case "low": return "text-red-600 bg-red-100"
     default: return "text-gray-600 bg-gray-100"
   }
@@ -63,8 +63,8 @@ const getEngagementColor = (level?: string) => {
 const getGrowthColor = (potential?: string) => {
   if (!potential) return "text-gray-600 bg-gray-100"
   switch (potential.toLowerCase()) {
-    case "high": return "text-green-600 bg-green-100"
-    case "medium": return "text-yellow-600 bg-yellow-100"
+    case "high": return "crypto-profit bg-profit/10"
+    case "medium": return "crypto-text-secondary bg-brand-10"
     case "low": return "text-red-600 bg-red-100"
     default: return "text-gray-600 bg-gray-100"
   }
@@ -163,7 +163,7 @@ export default function VideoDetailPage() {
                   {formatDuration(videoData.duration)}
                 </div>
                 <div className="absolute top-4 right-4">
-                  <Button size="sm" asChild style={{ backgroundColor: "#00C951" }} className="hover:bg-[#00A843]">
+                  <Button size="sm" asChild className="crypto-button-primary">
                     <Link href={videoData.youtube_url || videoData.analytics?.url || `https://www.youtube.com/watch?v=${videoData.video_id}`} target="_blank">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Watch on YouTube
@@ -272,7 +272,7 @@ export default function VideoDetailPage() {
                       <div className="text-xs text-muted-foreground">Views per Day</div>
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{(videoData.watch_time_hours || 0).toFixed(2)}</div>
+                      <div className="text-2xl font-bold crypto-profit">{(videoData.watch_time_hours || 0).toFixed(2)}</div>
                       <div className="text-xs text-muted-foreground">Watch Time (hrs)</div>
                     </div>
                   </div>
@@ -437,7 +437,7 @@ export default function VideoDetailPage() {
               <CardTitle>Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full" style={{ backgroundColor: "#00C951" }}>
+              <Button className="w-full crypto-button-primary">
                 Edit Video
               </Button>
               <Button variant="outline" className="w-full">

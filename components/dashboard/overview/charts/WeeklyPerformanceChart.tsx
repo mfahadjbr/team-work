@@ -41,19 +41,19 @@ export default function WeeklyPerformanceChart({ weeklyData }: WeeklyPerformance
             <Line
               type="monotone"
               dataKey="views"
-              stroke="#00C951"
+              stroke="#FD1D1D"
               strokeWidth={3}
-              dot={{ fill: "#00C951", strokeWidth: 2, r: 4 }}
-              activeDot={{ r: 6, stroke: "#00C951", strokeWidth: 2 }}
+              dot={{ fill: "#FD1D1D", strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6, stroke: "#FD1D1D", strokeWidth: 2 }}
               name="Views"
             />
             <Line
               type="monotone"
               dataKey="engagement"
-              stroke="#00A843"
+              stroke="#FF6B35"
               strokeWidth={3}
-              dot={{ fill: "#00A843", strokeWidth: 2, r: 4 }}
-              activeDot={{ r: 6, stroke: "#00A843", strokeWidth: 2 }}
+              dot={{ fill: "#FF6B35", strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6, stroke: "#FF6B35", strokeWidth: 2 }}
               name="Engagement %"
             />
           </LineChart>

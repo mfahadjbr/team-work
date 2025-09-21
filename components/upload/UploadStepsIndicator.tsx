@@ -18,10 +18,10 @@ export const UploadStepsIndicator = ({ steps, currentStep }: UploadStepsIndicato
               <div
                 className={`flex items-center justify-center w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 ${
                   currentStep === step.id
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-brand-primary bg-brand-primary text-white crypto-glow"
                     : step.completed && step.id !== "preview"
-                      ? "border-green-500 bg-green-500 text-white"
-                      : "border-muted-foreground bg-background"
+                      ? "border-profit bg-profit text-white crypto-glow"
+                      : "border-primary bg-card"
                 }`}
               >
                 {step.completed && step.id !== "preview" ? (
@@ -32,14 +32,14 @@ export const UploadStepsIndicator = ({ steps, currentStep }: UploadStepsIndicato
               </div>
               <span
                 className={`mt-2 text-xs lg:text-sm text-center ${
-                  currentStep === step.id ? "font-medium text-primary" : "text-muted-foreground"
+                  currentStep === step.id ? "font-medium crypto-text-primary" : "crypto-text-secondary"
                 }`}
               >
                 {step.title}
               </span>
             </div>
             {index < steps.length - 1 && (
-              <div className={`h-0.5 flex-1 mx-2 ${step.completed ? "bg-green-500" : "bg-muted"}`} />
+              <div className={`h-0.5 flex-1 mx-2 ${step.completed ? "bg-profit" : "bg-primary"}`} />
             )}
           </div>
         ))}

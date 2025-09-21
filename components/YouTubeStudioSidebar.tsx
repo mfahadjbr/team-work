@@ -69,7 +69,7 @@ export function YouTubeStudioSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] w-64 border-r border-border bg-white shadow-lg">
+    <aside className="fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] w-64 border-r border-primary bg-secondary crypto-glow">
       <div className="flex h-full flex-col">
         <div className="flex-1 overflow-auto py-6">
           <nav className="space-y-2 px-4">
@@ -78,10 +78,10 @@ export function YouTubeStudioSidebar() {
               return (
                 <Link key={item.href} href={item.href}>
                   <Button
-                    variant={isActive ? "secondary" : "ghost"}
+                    variant={isActive ? "crypto" : "cryptoGhost"}
                     className={cn(
-                      "w-full justify-start gap-4 h-12",
-                      isActive && "bg-green-100 text-green-800 border-green-200",
+                      "w-full justify-start gap-4 h-12 crypto-hover-glow",
+                      isActive && "crypto-glow",
                     )}
                   >
                     <item.icon className="h-5 w-5" />

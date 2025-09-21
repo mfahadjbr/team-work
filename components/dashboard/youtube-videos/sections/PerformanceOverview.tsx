@@ -58,7 +58,7 @@ export default function PerformanceOverview({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs sm:text-sm font-medium">High Performance (80+)</span>
-                <Badge variant="outline" className="text-green-600 bg-green-50 border-green-200 text-xs">
+                <Badge variant="outline" className="crypto-profit bg-profit/10 border-profit/20 text-xs">
                   {performanceDistribution.high} videos
                 </Badge>
               </div>
@@ -103,8 +103,8 @@ export default function PerformanceOverview({
       <Card className="hover:shadow-md transition-all duration-200">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-sm sm:text-base lg:text-lg">
-            <div className="p-1.5 sm:p-2 bg-green-50 rounded-full">
-              <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+            <div className="p-1.5 sm:p-2 bg-brand-10 rounded-full crypto-glow">
+              <Activity className="w-4 h-4 sm:w-5 sm:h-5 crypto-profit" />
             </div>
             Engagement Overview
           </CardTitle>
@@ -115,7 +115,7 @@ export default function PerformanceOverview({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs sm:text-sm font-medium">High Engagement (10%+)</span>
-                <Badge variant="outline" className="text-green-600 bg-green-50 border-green-200 text-xs">
+                <Badge variant="outline" className="crypto-profit bg-profit/10 border-profit/20 text-xs">
                   {performanceDistribution.highEngagement} videos
                 </Badge>
               </div>

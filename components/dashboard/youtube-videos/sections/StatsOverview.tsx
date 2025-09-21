@@ -27,8 +27,8 @@ export default function StatsOverview({ stats, isLoading }: StatsOverviewProps) 
       icon: ThumbsUp,
       value: stats.totalLikes.toLocaleString(),
       label: "Total Likes",
-      color: "text-green-500",
-      bgColor: "bg-green-50"
+      color: "crypto-profit",
+      bgColor: "bg-profit/10"
     },
     {
       icon: MessageCircle,

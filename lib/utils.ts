@@ -53,9 +53,9 @@ export const safeFormatDuration = (duration: string | null | undefined, fallback
 export const getSafePerformanceColor = (score: number | null | undefined): string => {
   const safeScore = asNumber(score)
   if (safeScore < 0) return "text-gray-600 bg-gray-100 border-gray-200"
-  if (safeScore >= 80) return "text-green-600 bg-green-100 border-green-200"
+  if (safeScore >= 80) return "crypto-profit bg-profit/10 border-profit/20"
   if (safeScore >= 60) return "text-blue-600 bg-blue-100 border-blue-200"
-  if (safeScore >= 40) return "text-yellow-600 bg-yellow-100 border-yellow-200"
+  if (safeScore >= 40) return "crypto-text-secondary bg-brand-10 border-brand-200"
   if (safeScore >= 20) return "text-orange-600 bg-orange-100 border-orange-200"
   return "text-red-600 bg-red-100 border-red-200"
 }
@@ -64,8 +64,8 @@ export const getSafePerformanceColor = (score: number | null | undefined): strin
 export const getSafeEngagementColor = (rate: number | null | undefined): string => {
   const safeRate = asNumber(rate)
   if (safeRate < 0) return "text-gray-600 bg-gray-100 border-gray-200"
-  if (safeRate >= 10) return "text-green-600 bg-green-100 border-green-200"
+  if (safeRate >= 10) return "crypto-profit bg-profit/10 border-profit/20"
   if (safeRate >= 5) return "text-blue-600 bg-blue-100 border-blue-200"
-  if (safeRate >= 2) return "text-yellow-600 bg-yellow-100 border-yellow-200"
+  if (safeRate >= 2) return "crypto-text-secondary bg-brand-10 border-brand-200"
   return "text-red-600 bg-red-100 border-red-200"
 }

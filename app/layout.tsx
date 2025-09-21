@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <style>{`
 html {
@@ -24,7 +24,7 @@ html {
 }
         `}</style>
       </head>
-      <body>{children}</body>
+      <body className="crypto-gradient-bg">{children}</body>
     </html>
   )
 }

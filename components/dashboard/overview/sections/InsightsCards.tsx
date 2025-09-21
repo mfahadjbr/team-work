@@ -65,11 +65,11 @@ export default function InsightsCards({ channelInsights, contentBreakdown, growt
         <CardContent className="space-y-3 sm:space-y-4">
           <div className="flex justify-between items-center">
             <span className="text-xs sm:text-sm text-muted-foreground">Subscriber Growth</span>
-            <span className="font-medium text-green-600 text-sm sm:text-base">+{growthMetrics.subscriberGrowth}/month</span>
+            <span className="font-medium crypto-profit text-sm sm:text-base">+{growthMetrics.subscriberGrowth}/month</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-xs sm:text-sm text-muted-foreground">View Growth</span>
-            <span className="font-medium text-green-600 text-sm sm:text-base">+{growthMetrics.viewGrowth}/month</span>
+            <span className="font-medium crypto-profit text-sm sm:text-base">+{growthMetrics.viewGrowth}/month</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-xs sm:text-sm text-muted-foreground">Channel Age</span>

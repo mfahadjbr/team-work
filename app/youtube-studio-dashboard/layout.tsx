@@ -25,18 +25,18 @@ export default function YouTubeStudioLayout({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-green-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+      <div className="flex items-center justify-center min-h-screen crypto-gradient-bg">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen crypto-gradient-bg">
       <YouTubeStudioHeader />
       <div className="flex">
         <YouTubeStudioSidebar />
-        <main className="flex-1 p-6 lg:p-8 ml-64 bg-green-50">{children}</main>
+        <main className="flex-1 p-6 lg:p-8 ml-64 crypto-gradient-bg">{children}</main>
       </div>
     </div>
   )

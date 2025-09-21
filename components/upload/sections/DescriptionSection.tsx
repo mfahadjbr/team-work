@@ -56,10 +56,10 @@ export function DescriptionSection({
   }
 
   return (
-    <Card>
+    <Card className="crypto-card crypto-hover-glow">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
-          <FileText className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl crypto-text-primary">
+          <FileText className="h-5 w-5 crypto-profit" />
           Generate Description
         </CardTitle>
       </CardHeader>
@@ -67,7 +67,7 @@ export function DescriptionSection({
         <Button 
           onClick={handlers.generateDescription} 
           disabled={state.isProcessing || descriptionLoading} 
-          className="w-full"
+          className="w-full crypto-button-primary"
         >
           <FileText className="w-4 h-4 mr-2" />
           Generate Description with AI
@@ -75,16 +75,16 @@ export function DescriptionSection({
 
         {(state.content.description || generatedDescription) && (
           <div className="space-y-3">
-            <Label>Generated Description:</Label>
-            <div className="p-4 border rounded-lg bg-muted/50 max-h-60 overflow-y-auto">
-              <pre className="whitespace-pre-wrap text-sm">{state.content.description || generatedDescription}</pre>
+            <Label className="crypto-text-primary">Generated Description:</Label>
+            <div className="p-4 border border-primary rounded-lg bg-card/50 max-h-60 overflow-y-auto crypto-glow">
+              <pre className="whitespace-pre-wrap text-sm crypto-text-primary">{state.content.description || generatedDescription}</pre>
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 variant="outline"
                 onClick={handlers.generateDescription}
                 disabled={state.isProcessing || descriptionLoading}
-                className="sm:w-auto w-full bg-transparent"
+                className="sm:w-auto w-full crypto-button-secondary"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Regenerate Description
@@ -100,11 +100,11 @@ export function DescriptionSection({
                     }
                   }}
                   disabled={isSavingDescription}
-                  className="sm:w-auto w-full bg-transparent"
+                  className="sm:w-auto w-full crypto-button-secondary"
                 >
                   {isSavingDescription ? (
                     <>
-                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin crypto-spinner" />
                       Saving...
                     </>
                   ) : (
@@ -117,37 +117,37 @@ export function DescriptionSection({
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="description-template">Custom Description Template (optional):</Label>
+          <Label htmlFor="description-template" className="crypto-text-primary">Custom Description Template (optional):</Label>
           <Textarea
             id="description-template"
             placeholder="Enter a template for description generation"
             value={state.customDescriptionTemplate}
             onChange={(e) => updateState({ customDescriptionTemplate: e.target.value })}
             rows={3}
-            className="resize-none"
+            className="resize-none crypto-input"
           />
           {state.customDescriptionTemplate && (
             <Button
               variant="outline"
               onClick={handleTemplateRegenerate}
               disabled={state.isProcessing || descriptionLoading}
-              className="w-full sm:w-auto bg-transparent"
+              className="w-full sm:w-auto crypto-button-secondary"
             >
-              <Sparkles className="w-4 h-4 mr-2" />
+              <Sparkles className="w-4 h-4 mr-2 crypto-profit" />
               Generate with Template
             </Button>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="custom-description">Or write custom description:</Label>
+          <Label htmlFor="custom-description" className="crypto-text-primary">Or write custom description:</Label>
           <Textarea
             id="custom-description"
             placeholder="Enter your custom description"
             value={customDescription}
             onChange={(e) => setCustomDescription(e.target.value)}
             rows={6}
-            className="resize-none"
+            className="resize-none crypto-input"
           />
         </div>
 
@@ -155,11 +155,11 @@ export function DescriptionSection({
           <Button 
             onClick={handleSaveAndNext}
             disabled={isSavingDescription}
-            className="w-full"
+            className="w-full crypto-button-primary"
           >
             {isSavingDescription ? (
               <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin crypto-spinner" />
                 Saving Description...
               </>
             ) : (

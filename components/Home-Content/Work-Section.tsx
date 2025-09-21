@@ -29,8 +29,8 @@ export function WorkSection() {
 
           <Card className="text-center group hover:shadow-lg transition-all duration-300 hover:-translate-y-2">
             <CardHeader>
-              <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-secondary/20 transition-colors">
-                <Sparkles className="h-8 w-8 text-secondary" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                <Sparkles className="h-8 w-8 text-[#fd1d1d]" />
               </div>
               <CardTitle className="text-2xl">2. AI Generation</CardTitle>
             </CardHeader>

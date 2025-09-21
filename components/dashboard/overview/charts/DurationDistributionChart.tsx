@@ -9,7 +9,7 @@ export default function DurationDistributionChart({ durationDistribution }: Dura
   const durationDistributionData = Object.entries(durationDistribution).map(([range, count]) => ({
     range,
     count,
-    color: range === '0-5min' ? '#00C951' : range === '5-15min' ? '#00A843' : range === '15-30min' ? '#008735' : '#006627'
+    color: range === '0-5min' ? '#FD1D1D' : range === '5-15min' ? '#FF6B35' : range === '15-30min' ? '#F7931E' : '#FFA500'
   }))
 
   return (
@@ -32,7 +32,7 @@ export default function DurationDistributionChart({ durationDistribution }: Dura
                 color: '#f9fafb'
               }}
             />
-            <Bar dataKey="count" fill="#00A843" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="count" fill="#FF6B35" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

@@ -30,11 +30,11 @@ export default function ChannelMetrics({ chartData, performanceData }: ChannelMe
             config={{
               views: {
                 label: "Views",
-                color: "#00C951",
+                color: "#FD1D1D",
               },
               engagement: {
                 label: "Engagement Rate",
-                color: "#00A843",
+                color: "#FF6B35",
               },
             }}
             className="h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
@@ -55,11 +55,11 @@ export default function ChannelMetrics({ chartData, performanceData }: ChannelMe
                   width={40}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Line type="monotone" dataKey="views" stroke="#00C951" strokeWidth={2} name="Views" />
+                <Line type="monotone" dataKey="views" stroke="#FD1D1D" strokeWidth={2} name="Views" />
                 <Line
                   type="monotone"
                   dataKey="engagement"
-                  stroke="#00A843"
+                  stroke="#FF6B35"
                   strokeWidth={2}
                   name="Engagement %"
                 />
@@ -79,7 +79,7 @@ export default function ChannelMetrics({ chartData, performanceData }: ChannelMe
             config={{
               count: {
                 label: "Videos",
-                color: "#00C951",
+                color: "#FD1D1D",
               },
             }}
             className="h-[180px] sm:h-[200px] md:h-[250px] lg:h-[300px]"
@@ -100,7 +100,7 @@ export default function ChannelMetrics({ chartData, performanceData }: ChannelMe
                   width={40}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="count" fill="#00C951" name="Videos" />
+                <Bar dataKey="count" fill="#FD1D1D" name="Videos" />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>

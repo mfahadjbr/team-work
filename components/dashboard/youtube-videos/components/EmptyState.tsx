@@ -32,7 +32,7 @@ export default function EmptyState({ searchQuery, selectedStatus, onClearFilters
               <X className="h-4 w-4 mr-2" />
               Clear Filters
             </Button>
-            <Button asChild className="w-full sm:w-auto bg-[#00C951] hover:bg-[#00A843] text-white">
+            <Button asChild className="w-full sm:w-auto crypto-button-primary">
               <Link href="/dashboard/upload" className="flex items-center justify-center">
                 <Upload className="h-4 w-4 mr-2" />
                 Upload New Video
@@ -47,7 +47,7 @@ export default function EmptyState({ searchQuery, selectedStatus, onClearFilters
   return (
     <Card className="border-dashed border-2">
       <CardContent className="flex flex-col items-center justify-center py-16 sm:py-20 text-center">
-        <div className="rounded-full bg-gradient-to-br from-blue-50 to-green-50 p-6 mb-6">
+        <div className="rounded-full crypto-card p-6 mb-6 crypto-glow">
           <Video className="h-12 w-12 sm:h-16 sm:w-16 text-blue-500" />
         </div>
         
@@ -57,7 +57,7 @@ export default function EmptyState({ searchQuery, selectedStatus, onClearFilters
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
-          <Button asChild className="w-full sm:w-auto bg-[#00C951] hover:bg-[#00A843] text-white h-11">
+          <Button asChild className="w-full sm:w-auto crypto-button-primary h-11">
             <Link href="/dashboard/upload" className="flex items-center justify-center">
               <Upload className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               <span className="hidden sm:inline">Upload Your First Video</span>

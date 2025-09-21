@@ -69,7 +69,7 @@ export function VideoCard({ video, onRegenerate, onVisibilityChange, onSchedule,
 
   return (
     <>
-      <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-200">
+      <Card className="overflow-hidden group cursor-pointer crypto-card crypto-hover-glow transition-all duration-200">
         <Link href={`/dashboard/videos/${video.id}`} className="block">
           <div className="aspect-video relative bg-muted">
             <img
@@ -101,7 +101,7 @@ export function VideoCard({ video, onRegenerate, onVisibilityChange, onSchedule,
                 </div>
               ) : (
                 <Link href={`/dashboard/videos/${video.id}`} className="block">
-                  <CardTitle className="text-lg leading-tight hover:text-primary transition-colors">{video.title}</CardTitle>
+                  <CardTitle className="text-lg leading-tight crypto-text-primary hover:crypto-text-secondary transition-colors">{video.title}</CardTitle>
                 </Link>
               )}
             </div>
@@ -126,16 +126,16 @@ export function VideoCard({ video, onRegenerate, onVisibilityChange, onSchedule,
               />
             </div>
           ) : (
-            <CardDescription className="text-sm leading-relaxed">{video.description}</CardDescription>
+            <CardDescription className="text-sm leading-relaxed crypto-text-secondary">{video.description}</CardDescription>
           )}
 
           {video.status === "completed" && (
             <>
               {/* Visibility Toggle */}
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-card/50 rounded-lg crypto-glow">
                 <div className="flex items-center gap-2">
-                  {isPublic ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                  <span className="text-sm font-medium">{isPublic ? "Public" : "Private"}</span>
+                  {isPublic ? <Eye className="h-4 w-4 crypto-profit" /> : <EyeOff className="h-4 w-4 crypto-text-tertiary" />}
+                  <span className="text-sm font-medium crypto-text-primary">{isPublic ? "Public" : "Private"}</span>
                 </div>
                 <Switch checked={isPublic} onCheckedChange={handleVisibilityChange} />
               </div>
@@ -144,29 +144,29 @@ export function VideoCard({ video, onRegenerate, onVisibilityChange, onSchedule,
               <div className="flex flex-wrap gap-2">
                 {isEditing ? (
                   <>
-                    <Button onClick={handleSaveEdits} size="sm">
+                    <Button onClick={handleSaveEdits} size="sm" className="crypto-button-primary">
                       <Save className="h-4 w-4 mr-2" />
                       Save Changes
                     </Button>
-                    <Button variant="outline" onClick={handleCancelEdits} size="sm">
+                    <Button variant="outline" onClick={handleCancelEdits} size="sm" className="crypto-button-secondary">
                       Cancel
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button variant="outline" size="sm" onClick={handleRegenerate} disabled={isRegenerating}>
+                    <Button variant="outline" size="sm" onClick={handleRegenerate} disabled={isRegenerating} className="crypto-button-secondary">
                       {isRegenerating ? (
-                        <div className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                        <div className="h-4 w-4 mr-2 animate-spin rounded-full border-2 border-brand-primary border-t-transparent crypto-spinner" />
                       ) : (
                         <RefreshCw className="h-4 w-4 mr-2" />
                       )}
                       Generate Again
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => setShowScheduleModal(true)}>
+                    <Button variant="outline" size="sm" onClick={() => setShowScheduleModal(true)} className="crypto-button-secondary">
                       <Calendar className="h-4 w-4 mr-2" />
                       Schedule
                     </Button>
-                    <Button size="sm" onClick={onPublish}>
+                    <Button size="sm" onClick={onPublish} className="crypto-button-primary">
                       <Upload className="h-4 w-4 mr-2" />
                       Publish Now
                     </Button>
@@ -175,9 +175,9 @@ export function VideoCard({ video, onRegenerate, onVisibilityChange, onSchedule,
               </div>
 
               {video.scheduledDate && (
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <Calendar className="h-4 w-4 inline mr-1" />
+                <div className="p-3 bg-brand-50 border border-brand-200 rounded-lg crypto-glow">
+                  <p className="text-sm crypto-text-primary">
+                    <Calendar className="h-4 w-4 inline mr-1 crypto-profit" />
                     Scheduled for: {new Date(video.scheduledDate).toLocaleString()}
                   </p>
                 </div>

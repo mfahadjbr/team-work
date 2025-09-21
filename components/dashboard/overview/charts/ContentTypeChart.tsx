@@ -9,7 +9,7 @@ export default function ContentTypeChart({ contentTypeBreakdown }: ContentTypeCh
   const contentTypeData = Object.entries(contentTypeBreakdown).map(([type, count]) => ({
     name: type.charAt(0).toUpperCase() + type.slice(1),
     value: count,
-    color: type === 'shorts' ? '#00C951' : type === 'tutorials' ? '#00A843' : type === 'lectures' ? '#008735' : '#006627'
+    color: type === 'shorts' ? '#FD1D1D' : type === 'tutorials' ? '#FF6B35' : type === 'lectures' ? '#F7931E' : '#FFA500'
   }))
 
   return (
@@ -26,7 +26,7 @@ export default function ContentTypeChart({ contentTypeBreakdown }: ContentTypeCh
               cx="50%"
               cy="50%"
               outerRadius={80}
-              fill="#00C951"
+              fill="#FD1D1D"
               dataKey="value"
               label={({ name, value }) => `${name}: ${value}`}
               labelLine={false}

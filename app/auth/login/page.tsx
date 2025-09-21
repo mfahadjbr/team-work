@@ -43,25 +43,22 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <div className="min-h-screen crypto-gradient-bg flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-2 group">
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "#00C951" }}
-            >
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity crypto-primary-gradient crypto-glow">
               <Play className="h-5 w-5 text-white fill-current" />
             </div>
-            <span className="text-2xl font-bold text-foreground">YouTube Automator</span>
+            <span className="text-2xl font-bold crypto-text-primary">YouTube Automator</span>
           </Link>
         </div>
 
-        <Card className="shadow-lg">
+        <Card className="shadow-lg crypto-card">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>Sign in to your account to continue</CardDescription>
+            <CardTitle className="text-2xl crypto-text-primary">Welcome Back</CardTitle>
+            <CardDescription className="crypto-text-secondary">Sign in to your account to continue</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -72,7 +69,7 @@ export default function LoginPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="crypto-text-primary">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -81,11 +78,12 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={isLoading}
+                  className="crypto-input"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="crypto-text-primary">Password</Label>
                 <div className="relative">
                   <Input
                     id="password"
@@ -95,10 +93,11 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
+                    className="crypto-input"
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-2 sm:right- top-1/2 -translate-y-1/2 crypto-text-tertiary hover:crypto-text-primary"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -107,12 +106,12 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Link href="#" className="text-sm text-primary hover:underline">
+                <Link href="#" className="text-sm crypto-text-primary hover:underline">
                   Forgot password?
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full bg-[#00C951] hover:bg-[#00C951]/90" disabled={isLoading}>
+              <Button type="submit" className="w-full crypto-button-primary" disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -125,9 +124,9 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm crypto-text-secondary">
                 Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-primary hover:underline font-medium">
+                <Link href="/auth/signup" className="crypto-text-primary hover:underline font-medium">
                   Sign up
                 </Link>
               </p>
@@ -136,7 +135,7 @@ export default function LoginPage() {
         </Card>
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link href="/" className="text-sm crypto-text-secondary hover:crypto-text-primary">
             ← Back to home
           </Link>
         </div>

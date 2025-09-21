@@ -33,7 +33,7 @@ export default function VideosHeader({ onRefresh }: VideosHeaderProps) {
             <span className="sm:hidden">Refresh Data</span>
           </RefreshButton>
         )}
-        <Button asChild className="w-full sm:w-auto order-1 sm:order-2 bg-[#00C951] hover:bg-[#00A843] text-white">
+        <Button asChild className="w-full sm:w-auto order-1 sm:order-2 crypto-button-primary">
           <Link href="/dashboard/upload" className="flex items-center justify-center">
             <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
             <span className="hidden sm:inline">Upload New Video</span>

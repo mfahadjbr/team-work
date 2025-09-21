@@ -22,11 +22,11 @@ export default function VideosList({ videos, viewMode }: VideosListProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "public":
-        return <CheckCircle className="h-4 w-4 text-green-500" />
+        return <CheckCircle className="h-4 w-4 crypto-profit" />
       case "private":
         return <AlertCircle className="h-4 w-4 text-orange-500" />
       case "unlisted":
-        return <Clock className="h-4 w-4 text-yellow-500" />
+        return <Clock className="h-4 w-4 crypto-text-secondary" />
       default:
         return null
     }
@@ -117,7 +117,7 @@ export default function VideosList({ videos, viewMode }: VideosListProps) {
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 mb-1">
-                      <ThumbsUp className="h-3 w-3 text-green-500" />
+                      <ThumbsUp className="h-3 w-3 crypto-profit" />
                       <span className="font-medium text-sm">{asNumber(video.like_count)}</span>
                     </div>
                     <div className="text-xs text-muted-foreground">Likes</div>
@@ -151,7 +151,7 @@ export default function VideosList({ videos, viewMode }: VideosListProps) {
                 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                  <Button asChild size="sm" className="flex-1 bg-[#00C951] hover:bg-[#00A843] text-white">
+                  <Button asChild size="sm" className="flex-1 crypto-button-primary">
                     <Link href={`/dashboard/videos/${video.video_id}`}>
                       View Details
                     </Link>

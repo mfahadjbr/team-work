@@ -40,15 +40,15 @@ const formatDate = (dateString: string) => {
 }
 
 const getPerformanceColor = (score: number) => {
-  if (score >= 100) return "text-green-600"
-  if (score >= 50) return "text-yellow-600"
+  if (score >= 100) return "crypto-profit"
+  if (score >= 50) return "crypto-text-secondary"
   if (score >= 20) return "text-orange-600"
   return "text-red-600"
 }
 
 const getEngagementColor = (rate: number) => {
-  if (rate >= 5) return "text-green-600"
-  if (rate >= 2) return "text-yellow-600"
+  if (rate >= 5) return "crypto-profit"
+  if (rate >= 2) return "crypto-text-secondary"
   if (rate >= 1) return "text-orange-600"
   return "text-red-600"
 }
@@ -56,9 +56,9 @@ const getEngagementColor = (rate: number) => {
 const getHealthColor = (level?: string) => {
   if (!level) return "text-gray-600 bg-gray-100"
   switch (level.toLowerCase()) {
-    case "excellent": return "text-green-600 bg-green-100"
+    case "excellent": return "crypto-profit bg-profit/10"
     case "good": return "text-blue-600 bg-blue-100"
-    case "average": return "text-yellow-600 bg-yellow-100"
+    case "average": return "crypto-text-secondary bg-brand-10"
     case "poor": return "text-red-600 bg-red-100"
     default: return "text-gray-600 bg-gray-100"
   }
@@ -228,17 +228,17 @@ export default function PlaylistVideosPage() {
         </div>
       </div>
       {/* Playlist Overview */}
-      <Card className="border-2 border-primary/20 bg-gradient-to-br from-green-50 to-white">
+      <Card className="border-2 border-primary/20 crypto-card">
         <CardContent className="p-6">
           <div className="space-y-6">
             {/* Stats Cards */}
             <div>
-              <h2 className="text-xl font-bold text-green-600 mb-4">Playlist Overview</h2>
+              <h2 className="text-xl font-bold crypto-profit mb-4">Playlist Overview</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 <Card className="bg-white shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2 text-gray-600">
-                      <Eye className="w-4 h-4 text-green-600" />
+                      <Eye className="w-4 h-4 crypto-profit" />
                       Total Views
                     </CardTitle>
                   </CardHeader>
@@ -344,13 +344,13 @@ export default function PlaylistVideosPage() {
                     </div>
                     <div className="flex justify-between">
                       <span>Views Growth</span>
-                      <span className={analytics.growth_metrics.avg_views_growth >= 0 ? "text-green-600" : "text-red-600"}>
+                      <span className={analytics.growth_metrics.avg_views_growth >= 0 ? "crypto-profit" : "crypto-loss"}>
                         {analytics.growth_metrics.avg_views_growth.toFixed(1)}%
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Engagement Growth</span>
-                      <span className={analytics.growth_metrics.avg_engagement_growth >= 0 ? "text-green-600" : "text-red-600"}>
+                      <span className={analytics.growth_metrics.avg_engagement_growth >= 0 ? "crypto-profit" : "crypto-loss"}>
                         {analytics.growth_metrics.avg_engagement_growth.toFixed(1)}%
                       </span>
                     </div>
@@ -489,7 +489,7 @@ export default function PlaylistVideosPage() {
                   </div>
                   
                   <div className="flex gap-2">
-                    <Button asChild size="sm" className="flex-1 bg-[#00C951] hover:bg-[#00A843]">
+                    <Button asChild size="sm" className="flex-1 crypto-button-primary">
                       <Link href={`/dashboard/videos/${video.video_id}`}>
                         View Details
                       </Link>
@@ -550,7 +550,7 @@ export default function PlaylistVideosPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button asChild size="sm" className="flex-1 bg-[#00C951] hover:bg-[#00A843]">
+                          <Button asChild size="sm" className="flex-1 crypto-button-primary">
                             <Link href={`/dashboard/videos/${v.video_id}`}>View Details</Link>
                           </Button>
                           <Button asChild size="sm" variant="outline">

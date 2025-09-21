@@ -35,15 +35,15 @@ export function DashboardHeader() {
   }
 
   return (
-    <header className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="w-full crypto-navbar">
       <div className="flex h-16 items-center px-3 sm:px-6">
         {/* Logo */}
         <Link href="/dashboard" className="flex items-center space-x-2 mr-4 sm:mr-8 min-w-0">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-            <Play className="h-4 w-4 text-primary-foreground fill-current" />
+          <div className="w-8 h-8 crypto-primary-gradient rounded-lg flex items-center justify-center flex-shrink-0 crypto-glow">
+            <Play className="h-4 w-4 text-white fill-current" />
           </div>
-          <span className="text-lg sm:text-xl font-bold text-foreground hidden sm:block">YouTube Automator</span>
-          <span className="text-lg font-bold text-foreground sm:hidden">YT Auto</span>
+          <span className="text-lg sm:text-xl font-bold crypto-text-primary hidden sm:block">YouTube Automator</span>
+          <span className="text-lg font-bold crypto-text-primary sm:hidden">YT Auto</span>
         </Link>
 
         {/* Spacer */}

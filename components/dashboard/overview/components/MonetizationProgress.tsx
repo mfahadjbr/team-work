@@ -26,10 +26,10 @@ export default function MonetizationProgress({
   }
 
   return (
-    <Card className="border-green-200 bg-green-50/50">
+    <Card className="border-profit/20 bg-profit/10 crypto-glow">
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Zap className="w-5 h-5 text-green-600" />
+          <Zap className="w-5 h-5 crypto-profit" />
           Monetization Progress
         </CardTitle>
         <CardDescription>

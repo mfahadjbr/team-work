@@ -103,44 +103,44 @@ export function PreviewSection({
   }
 
   return (
-    <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/30">
+    <Card className="border-0 shadow-lg crypto-card">
       <CardHeader className="pb-6">
-        <CardTitle className="flex items-center gap-3 text-2xl lg:text-3xl font-bold text-green-900">
-          <div className="p-2 bg-green-100 rounded-lg">
-            <Eye className="h-6 w-6 text-green-600" />
+        <CardTitle className="flex items-center gap-3 text-2xl lg:text-3xl font-bold crypto-text-primary">
+          <div className="p-2 bg-brand-10 rounded-lg crypto-glow">
+            <Eye className="h-6 w-6 crypto-profit" />
           </div>
           {state.previewStage === 1 ? "Review Content" : state.previewStage === 2 ? "Settings" : "Final Preview"}
         </CardTitle>
-        <p className="text-lg text-green-700 mt-2">
+        <p className="text-lg crypto-text-secondary mt-2">
           {state.previewStage === 1 ? "Review your generated content" : 
            state.previewStage === 2 ? "Configure privacy and playlist settings" : 
            "Final review before upload"}
         </p>
         
         {/* Stage Progress Indicator */}
-        <div className="flex items-center gap-4 mt-6 p-4 bg-white/50 rounded-xl border border-blue-200/30">
+        <div className="flex items-center gap-4 mt-6 p-4 bg-card/50 rounded-xl border border-primary/30">
           {[1, 2, 3].map((stageNum) => (
             <div key={stageNum} className="flex items-center">
               <div
                 className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-200 ${
                   state.previewStage === stageNum
-                    ? "border-green-600 bg-green-600 text-white shadow-lg scale-110"
+                    ? "border-brand-primary bg-brand-primary text-white shadow-lg scale-110 crypto-glow"
                     : state.previewStage > stageNum
-                      ? "border-green-500 bg-green-500 text-white shadow-md"
-                      : "border-green-200 bg-white text-green-400"
+                      ? "border-profit bg-profit text-white shadow-md crypto-glow"
+                      : "border-primary bg-card text-primary"
                 }`}
               >
                 <span className="text-sm font-semibold">{stageNum}</span>
               </div>
               <span className={`ml-3 text-sm font-medium ${
-                state.previewStage === stageNum ? "text-green-900" : 
-                state.previewStage > stageNum ? "text-green-700" : "text-green-600"
+                state.previewStage === stageNum ? "crypto-text-primary" : 
+                state.previewStage > stageNum ? "crypto-text-secondary" : "crypto-text-tertiary"
               }`}>
                 {stageNum === 1 ? "Content" : stageNum === 2 ? "Settings" : "Preview"}
               </span>
               {stageNum < 3 && (
                 <div className={`h-1 flex-1 mx-4 rounded-full transition-all duration-300 ${
-                  state.previewStage > stageNum ? "bg-green-500" : "bg-green-200"
+                  state.previewStage > stageNum ? "bg-profit" : "bg-primary"
                 }`} />
               )}
             </div>
@@ -224,7 +224,7 @@ export function PreviewSection({
                 <Button 
                   variant="outline"
                   onClick={() => setIsEditModalOpen(true)}
-                  className="border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400"
+                  className="border-primary text-primary hover:bg-brand-10 hover:border-brand-primary"
                 >
                   <Edit3 className="w-4 h-4 mr-2" />
                   Edit
@@ -350,7 +350,7 @@ export function PreviewSection({
                 <Button 
                   variant="outline"
                   onClick={() => setIsEditModalOpen(true)}
-                  className="border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400"
+                  className="border-primary text-primary hover:bg-brand-10 hover:border-brand-primary"
                 >
                   <Edit3 className="w-4 h-4 mr-2" />
                   Edit
@@ -421,11 +421,11 @@ export function PreviewSection({
                     {/* Video Title */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-green-600" />
+                        <Sparkles className="w-5 h-5 crypto-profit" />
                         Video Title
                       </Label>
-                      <div className="p-6 border rounded-xl bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm">
-                        <h3 className="font-semibold text-xl text-green-900">
+                      <div className="p-6 border rounded-xl crypto-card border-primary/30 shadow-sm">
+                        <h3 className="font-semibold text-xl crypto-text-primary">
                           {previewData?.title || state.content.selectedTitle || state.customTitle || 'No title generated'}
                         </h3>
                       </div>
@@ -434,23 +434,23 @@ export function PreviewSection({
                     {/* Thumbnail */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <ImageIcon className="w-5 h-5 text-green-600" />
+                        <ImageIcon className="w-5 h-5 crypto-profit" />
                         Video Thumbnail
                       </Label>
-                      <div className="p-6 border rounded-xl bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm">
+                      <div className="p-6 border rounded-xl crypto-card border-primary/30 shadow-sm">
                         {(previewData?.thumbnail_url || state.content.selectedThumbnail) ? (
                           <div className="w-full max-w-md mx-auto">
                             <img
                               src={previewData?.thumbnail_url || state.content.selectedThumbnail}
                               alt="Video thumbnail"
-                              className="w-full h-auto rounded-xl border-2 border-green-200/30 shadow-lg"
+                              className="w-full h-auto rounded-xl border-2 border-primary/30 shadow-lg"
                             />
                           </div>
                         ) : (
                           <div className="w-full max-w-md mx-auto h-48 border-2 border-dashed border-blue-200/30 rounded-xl flex items-center justify-center text-muted-foreground bg-blue-50/20">
                             <div className="text-center">
-                              <ImageIcon className="w-12 h-12 mx-auto mb-2 text-green-400" />
-                              <span className="text-green-600">No thumbnail available</span>
+                              <ImageIcon className="w-12 h-12 mx-auto mb-2 crypto-text-tertiary" />
+                              <span className="crypto-profit">No thumbnail available</span>
                             </div>
                           </div>
                         )}
@@ -460,18 +460,18 @@ export function PreviewSection({
                     {/* Description */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <FileText className="w-5 h-5 text-green-600" />
+                        <FileText className="w-5 h-5 crypto-profit" />
                         Video Description
                       </Label>
-                      <div className="border rounded-xl p-6 bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm max-h-60 overflow-y-auto">
+                      <div className="border rounded-xl p-6 crypto-card border-primary/30 shadow-sm max-h-60 overflow-y-auto">
                         {(previewData?.description || state.content.description || state.customDescription) ? (
-                          <pre className="text-sm whitespace-pre-wrap leading-relaxed text-green-900">
+                          <pre className="text-sm whitespace-pre-wrap leading-relaxed crypto-text-primary">
                             {previewData?.description || state.content.description || state.customDescription}
                           </pre>
                         ) : (
                           <div className="text-center py-8">
-                            <FileText className="w-8 h-8 mx-auto mb-2 text-green-400" />
-                            <p className="text-sm text-green-600 italic">No description generated</p>
+                            <FileText className="w-8 h-8 mx-auto mb-2 crypto-text-tertiary" />
+                            <p className="text-sm crypto-profit italic">No description generated</p>
                           </div>
                         )}
                       </div>
@@ -480,26 +480,26 @@ export function PreviewSection({
                     {/* Timestamps */}
                     <div className="space-y-3">
                       <Label className="text-lg font-semibold flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-green-600" />
+                        <Clock className="w-5 h-5 crypto-profit" />
                         Video Timestamps
                       </Label>
-                      <div className="border rounded-xl p-6 bg-gradient-to-r from-green-50/30 to-indigo-50/30 border-green-200/30 shadow-sm max-h-60 overflow-y-auto">
+                      <div className="border rounded-xl p-6 crypto-card border-primary/30 shadow-sm max-h-60 overflow-y-auto">
                         {(previewData?.timestamps || state.content.timestamps || state.customTimestamps) ? (
-                          <pre className="text-sm whitespace-pre-wrap font-mono leading-relaxed text-green-900">
+                          <pre className="text-sm whitespace-pre-wrap font-mono leading-relaxed crypto-text-primary">
                             {previewData?.timestamps || state.content.timestamps || state.customTimestamps}
                           </pre>
                         ) : (
                           <div className="text-center py-8">
-                            <Clock className="w-8 h-8 mx-auto mb-2 text-green-400" />
-                            <p className="text-sm text-green-600 italic">No timestamps generated</p>
+                            <Clock className="w-8 h-8 mx-auto mb-2 crypto-text-tertiary" />
+                            <p className="text-sm crypto-profit italic">No timestamps generated</p>
                           </div>
                         )}
                       </div>
                     </div>
 
                                         {/* Summary Info */}
-                    <div className="border rounded-xl p-6 bg-gradient-to-r from-green-50/50 to-indigo-50/50 border-green-200/30 shadow-sm">
-                      <h3 className="text-xl font-semibold mb-6 text-green-900 flex items-center gap-2">
+                    <div className="border rounded-xl p-6 crypto-card border-primary/30 shadow-sm">
+                      <h3 className="text-xl font-semibold mb-6 crypto-text-primary flex items-center gap-2">
                         <Globe className="w-5 h-5" />
                         Upload Settings
                       </h3>
@@ -508,8 +508,8 @@ export function PreviewSection({
                           <Label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Privacy Setting</Label>
                           <div className="flex items-center gap-3">
                             <Badge className={`px-4 py-2 text-sm font-medium capitalize ${
-                              state.selectedPrivacy === 'public' ? 'bg-green-100 text-green-800 border-green-200' : 
-                              state.selectedPrivacy === 'unlisted' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' : 
+                              state.selectedPrivacy === 'public' ? 'bg-profit/10 text-profit border-profit/20' : 
+                              state.selectedPrivacy === 'unlisted' ? 'bg-brand-10 crypto-text-primary border-brand-200' : 
                               'bg-red-100 text-red-800 border-red-200'
                             }`}>
                               {state.selectedPrivacy === 'public' && <Globe className="w-4 h-4 mr-2" />}
@@ -524,8 +524,8 @@ export function PreviewSection({
                           <div className="flex items-center gap-2">
                             {state.selectedPlaylist ? (
                               <div className="flex items-center gap-2">
-                                <Play className="w-4 h-4 text-green-600" />
-                                <span className="text-sm font-medium text-green-900">{state.selectedPlaylist.name}</span>
+                                <Play className="w-4 h-4 crypto-profit" />
+                                <span className="text-sm font-medium crypto-text-primary">{state.selectedPlaylist.name}</span>
                               </div>
                             ) : (
                               <div className="flex items-center gap-2 text-muted-foreground">
@@ -544,7 +544,7 @@ export function PreviewSection({
                       <Button
                         onClick={() => setIsEditModalOpen(true)}
                         variant="outline"
-                        className="w-full border-green-300 cursor-pointer text-green-700 hover:bg-green-50 hover:border-green-400 font-medium py-3 px-6 text-base"
+                        className="w-full border-primary cursor-pointer crypto-text-primary hover:bg-brand-10 hover:border-brand-primary font-medium py-3 px-6 text-base"
                         disabled={state.isUploading}
                       >
                         <Edit3 className="w-4 h-4 mr-2" />
@@ -554,7 +554,7 @@ export function PreviewSection({
                       {/* Upload Button */}
                       <Button
                         onClick={() => handlers.handlePublish('public')}
-                        className="w-full bg-gradient-to-r cursor-pointer from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-8 text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                        className="w-full bg-gradient-to-r cursor-pointer from-brand-primary to-brand-primary-dark hover:from-brand-primary-dark hover:to-brand-primary text-white font-semibold py-4 px-8 text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
                         disabled={state.isUploading}
                         size="lg"
                       >
@@ -573,7 +573,7 @@ export function PreviewSection({
                       {state.isUploading && (
                         <div className="mt-4 text-center">
                           <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-brand-primary"></div>
                             Please wait while we upload your video...
                           </div>
                         </div>

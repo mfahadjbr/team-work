@@ -156,10 +156,7 @@ export default function YouTubeConnectPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center space-x-2 group">
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "#00C951" }}
-            >
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity crypto-primary-gradient crypto-glow">
               <Play className="h-5 w-5 text-white fill-current" />
             </div>
             <span className="text-2xl font-bold text-foreground">YouTube Automator</span>
@@ -234,7 +231,7 @@ export default function YouTubeConnectPage() {
                             handleProceedToDashboard()
                           }
                         }}
-                        className="bg-[#00C951] hover:bg-[#00C951]/90"
+                        className="crypto-button-primary"
                         size="sm"
                       >
                         {localStorage.getItem('youtube_redirect_after_auth') ? 'Continue to Previous Page' : 'Go to Dashboard'}
@@ -299,7 +296,7 @@ export default function YouTubeConnectPage() {
                   </p>
                   <Button
                     onClick={handleProceedToDashboard}
-                    className="w-full bg-[#00C951] hover:bg-[#00C951]/90"
+                    className="w-full crypto-button-primary"
                   >
                     Proceed to Dashboard
                   </Button>
@@ -311,15 +308,15 @@ export default function YouTubeConnectPage() {
             {showNoCredentials && !isLoadingAny && (
               <div className="space-y-4">
                 <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-[#00C951]" />
+                  <CheckCircle className="h-5 w-5 crypto-profit" />
                   <span className="text-sm">Generate AI-powered titles and descriptions</span>
                 </div>
                 <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-[#00C951]" />
+                  <CheckCircle className="h-5 w-5 crypto-profit" />
                   <span className="text-sm">Create custom thumbnails automatically</span>
                 </div>
                 <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                  <CheckCircle className="h-5 w-5 text-[#00C951]" />
+                  <CheckCircle className="h-5 w-5 crypto-profit" />
                   <span className="text-sm">Schedule and publish videos seamlessly</span>
                 </div>
               </div>

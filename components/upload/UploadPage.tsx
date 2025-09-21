@@ -142,10 +142,10 @@ export default function UploadPage() {
   // Show loading screen while checking YouTube credentials
   if (credentialChecking || !shouldAllowAccess) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen crypto-gradient-bg flex items-center justify-center">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto"></div>
+          <p className="crypto-text-secondary">
             {credentialChecking ? 'Checking YouTube credentials...' : 'Redirecting to YouTube connection...'}
           </p>
         </div>
@@ -154,7 +154,7 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen crypto-gradient-bg">
       {/* Celebration Modal */}
       <CelebrationModal
         isOpen={state.showCelebration}
@@ -170,8 +170,8 @@ export default function UploadPage() {
       <div className="container mx-auto px-4 py-6 space-y-6 lg:space-y-8">
         {/* Header */}
         <div className="text-center lg:text-left">
-          <h1 className="text-2xl lg:text-3xl font-bold text-foreground">Upload Video</h1>
-          <p className="text-muted-foreground mt-2">Create and optimize your YouTube content with AI assistance.</p>
+          <h1 className="text-2xl lg:text-3xl font-bold crypto-text-primary">Upload Video</h1>
+          <p className="crypto-text-secondary mt-2">Create and optimize your YouTube content with AI assistance.</p>
         </div>
 
         {/* Steps Indicator */}

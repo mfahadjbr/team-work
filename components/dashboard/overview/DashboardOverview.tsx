@@ -133,7 +133,7 @@ export default function DashboardOverview() {
                 <BarChart data={Object.entries(overviewData.advanced_analytics.engagement_distribution).map(([range, count]) => ({
                   range,
                   count,
-                  color: range === '0-1%' ? '#00C951' : range === '1-3%' ? '#00A843' : range === '3-5%' ? '#008735' : '#006627'
+                  color: range === '0-1%' ? '#FD1D1D' : range === '1-3%' ? '#FF6B35' : range === '3-5%' ? '#F7931E' : '#FFA500'
                 }))}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="range" stroke="#9CA3AF" fontSize={12} />
@@ -146,7 +146,7 @@ export default function DashboardOverview() {
                       color: '#f9fafb' 
                     }}
                   />
-                  <Bar dataKey="count" fill="#00C951" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" fill="#FD1D1D" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -179,28 +179,28 @@ export default function DashboardOverview() {
                   <Line
                     type="monotone"
                     dataKey="views"
-                    stroke="#00C951"
+                    stroke="#FD1D1D"
                     strokeWidth={3}
-                    dot={{ fill: "#00C951", strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, stroke: "#00C951", strokeWidth: 2 }}
+                    dot={{ fill: "#FD1D1D", strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#FD1D1D", strokeWidth: 2 }}
                     name="Views"
                   />
                   <Line
                     type="monotone"
                     dataKey="videos"
-                    stroke="#00A843"
+                    stroke="#FF6B35"
                     strokeWidth={3}
-                    dot={{ fill: "#00A843", strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, stroke: "#00A843", strokeWidth: 2 }}
+                    dot={{ fill: "#FF6B35", strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#FF6B35", strokeWidth: 2 }}
                     name="Videos"
                   />
                   <Line
                     type="monotone"
                     dataKey="engagement_rate"
-                    stroke="#008735"
+                    stroke="#F7931E"
                     strokeWidth={3}
-                    dot={{ fill: "#008735", strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, stroke: "#008735", strokeWidth: 2 }}
+                    dot={{ fill: "#F7931E", strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#F7931E", strokeWidth: 2 }}
                     name="Engagement Rate"
                   />
                 </LineChart>
@@ -252,7 +252,7 @@ export default function DashboardOverview() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
-                        className="bg-green-600 h-2.5 rounded-full" 
+                        className="bg-brand-primary h-2.5 rounded-full" 
                         style={{ 
                           width: `${Math.min(((overviewData as any).monetization_data.monetization_requirements.current_watch_time / (overviewData as any).monetization_data.monetization_requirements.watch_time_required) * 100, 100)}%` 
                         }}
@@ -304,7 +304,7 @@ export default function DashboardOverview() {
                       color: '#f9fafb' 
                     }}
                   />
-                  <Bar dataKey="score" fill="#00C951" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="score" fill="#FD1D1D" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -337,7 +337,7 @@ export default function DashboardOverview() {
                       color: '#f9fafb' 
                     }}
                   />
-                  <Bar dataKey="value" fill="#00A843" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="value" fill="#FF6B35" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -366,7 +366,7 @@ export default function DashboardOverview() {
                       color: '#f9fafb' 
                     }}
                   />
-                  <Bar dataKey="value" fill="#008735" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="value" fill="#F7931E" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>

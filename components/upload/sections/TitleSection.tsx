@@ -53,10 +53,10 @@ export function TitleSection({
   }
 
   return (
-    <Card>
+    <Card className="crypto-card crypto-hover-glow">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl">
-          <Sparkles className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-lg lg:text-xl crypto-text-primary">
+          <Sparkles className="h-5 w-5 crypto-profit" />
           Generate Title
         </CardTitle>
       </CardHeader>
@@ -64,7 +64,7 @@ export function TitleSection({
         <Button 
           onClick={handlers.generateTitlesHandler} 
           disabled={state.isProcessing || titleLoading} 
-          className="w-full"
+          className="w-full crypto-button-primary"
         >
           <Sparkles className="w-4 h-4 mr-2" />
           Generate Title with AI
@@ -72,21 +72,21 @@ export function TitleSection({
 
         {(state.content.titles.length > 0 || generatedTitles.length > 0) && (
           <div className="space-y-3">
-            <Label>Select a title:</Label>
+            <Label className="crypto-text-primary">Select a title:</Label>
             {(state.content.titles.length > 0 ? state.content.titles : generatedTitles).map((title, index) => (
               <div
                 key={index}
-                className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                className={`p-3 border rounded-lg cursor-pointer transition-colors crypto-glow ${
                   state.content.selectedTitle === title
-                    ? "border-primary bg-primary/5"
-                    : "border-muted hover:border-primary/50"
+                    ? "border-brand-primary bg-brand-10"
+                    : "border-primary hover:border-brand-primary/50"
                 }`}
                 onClick={() => handleTitleSelect(title)}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-sm flex-1">{title}</span>
+                  <span className="text-sm flex-1 crypto-text-primary">{title}</span>
                   {state.content.selectedTitle === title && (
-                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-4 h-4 crypto-profit flex-shrink-0 mt-0.5" />
                   )}
                 </div>
               </div>
@@ -96,7 +96,7 @@ export function TitleSection({
               variant="outline"
               onClick={handlers.generateTitlesHandler}
               disabled={state.isProcessing || titleLoading}
-              className="w-full sm:w-auto bg-transparent"
+              className="w-full sm:w-auto crypto-button-secondary"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Regenerate Titles
@@ -105,12 +105,13 @@ export function TitleSection({
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="custom-title">Or enter custom title:</Label>
+          <Label htmlFor="custom-title" className="crypto-text-primary">Or enter custom title:</Label>
           <Input
             id="custom-title"
             placeholder="Enter your custom title"
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
+            className="crypto-input"
           />
         </div>
 
@@ -118,11 +119,11 @@ export function TitleSection({
           <Button 
             onClick={handleSaveAndNext}
             disabled={isSavingTitle}
-            className="w-full"
+            className="w-full crypto-button-primary"
           >
             {isSavingTitle ? (
               <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin crypto-spinner" />
                 Saving Title...
               </>
             ) : (

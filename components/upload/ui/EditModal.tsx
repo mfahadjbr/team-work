@@ -82,7 +82,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
-            <Save className="w-5 h-5 text-green-600" />
+            <Save className="w-5 h-5 crypto-profit" />
             Edit Video Details
           </DialogTitle>
         </DialogHeader>
@@ -91,7 +91,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
           {/* Title Section */}
           <div className="space-y-3">
             <Label htmlFor="title" className="text-sm font-medium flex items-center gap-2">
-              <FileText className="w-4 h-4 text-green-600" />
+              <FileText className="w-4 h-4 crypto-profit" />
               Video Title
             </Label>
             <Input
@@ -106,7 +106,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
           {/* Description Section */}
           <div className="space-y-3">
             <Label htmlFor="description" className="text-sm font-medium flex items-center gap-2">
-              <FileText className="w-4 h-4 text-green-600" />
+              <FileText className="w-4 h-4 crypto-profit" />
               Video Description
             </Label>
             <Textarea
@@ -122,7 +122,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
           {/* Timestamps Section */}
           <div className="space-y-3">
             <Label htmlFor="timestamps" className="text-sm font-medium flex items-center gap-2">
-              <Clock className="w-4 h-4 text-green-600" />
+              <Clock className="w-4 h-4 crypto-profit" />
               Video Timestamps
             </Label>
             <Textarea
@@ -138,7 +138,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
           {/* Privacy Settings */}
           <div className="space-y-3">
             <Label className="text-sm font-medium flex items-center gap-2">
-              <Globe className="w-4 h-4 text-green-600" />
+              <Globe className="w-4 h-4 crypto-profit" />
               Privacy Setting
             </Label>
             <Select
@@ -174,7 +174,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
           {/* Playlist Section */}
           <div className="space-y-3">
             <Label htmlFor="playlist" className="text-sm font-medium flex items-center gap-2">
-              <Play className="w-4 h-4 text-green-600" />
+                <Play className="w-4 h-4 crypto-profit" />
               Playlist (Optional)
             </Label>
             <Input
@@ -189,7 +189,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
           {state.content.selectedThumbnail && (
             <div className="space-y-3">
               <Label className="text-sm font-medium flex items-center gap-2">
-                <ImageIcon className="w-4 h-4 text-green-600" />
+                <ImageIcon className="w-4 h-4 crypto-profit" />
                 Current Thumbnail
               </Label>
               <div className="p-4 border rounded-lg bg-muted/20">
@@ -220,7 +220,7 @@ export function EditModal({ isOpen, onClose, state, onSave, isSaving }: EditModa
             <Button
               onClick={handleSave}
               disabled={isSaving}
-              className="bg-green-600 hover:bg-green-700"
+              className="crypto-button-primary"
             >
               <Save className="w-4 h-4 mr-2" />
               {isSaving ? 'Saving...' : 'Save Changes'}

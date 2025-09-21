@@ -36,10 +36,10 @@
 // ]
 
 // const contentCategoriesData: ContentCategoryData[] = [
-//   { name: "Python Tutorials", value: 21, color: "#00C951" },
-//   { name: "JavaScript", value: 25, color: "#00A843" },
-//   { name: "Web Development", value: 18, color: "#008735" },
-//   { name: "Programming Shorts", value: 15, color: "#006627" },
+//   { name: "Python Tutorials", value: 21, color: "#FD1D1D" },
+//   { name: "JavaScript", value: 25, color: "#FF6B35" },
+//   { name: "Web Development", value: 18, color: "#F7931E" },
+//   { name: "Programming Shorts", value: 15, color: "#FFA500" },
 //   { name: "OOP Concepts", value: 8, color: "#004519" },
 // ]
 

@@ -27,7 +27,7 @@ export default function TopPerformingContent({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Award className="w-5 h-5 text-green-600" />
+          <Award className="w-5 h-5 crypto-profit" />
           Top Performing Content
         </CardTitle>
         <CardDescription>Your best videos by views and engagement</CardDescription>
@@ -38,7 +38,7 @@ export default function TopPerformingContent({
             <h4 className="font-semibold text-sm text-muted-foreground mb-3">Top by Views</h4>
             {topPerformingContent.top_videos_by_views.slice(0, 3).map((video, index) => (
               <div key={video.video_id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 mb-2">
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-profit/10 flex items-center justify-center crypto-profit font-bold text-sm crypto-glow">
                   {index + 1}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -66,7 +66,7 @@ export default function TopPerformingContent({
             <h4 className="font-semibold text-sm text-muted-foreground mb-3">Top by Engagement</h4>
             {topPerformingContent.top_videos_by_engagement.slice(0, 3).map((video, index) => (
               <div key={video.video_id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 mb-2">
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-sm">
+                <div className="w-8 h-8 rounded-full bg-profit/10 flex items-center justify-center crypto-profit font-bold text-sm crypto-glow">
                   {index + 1}
                 </div>
                 <div className="flex-1 min-w-0">

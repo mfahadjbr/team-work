@@ -9,7 +9,7 @@ export default function ViewDistributionChart({ viewDistribution }: ViewDistribu
   const viewDistributionData = Object.entries(viewDistribution).map(([range, count]) => ({
     range,
     count,
-    color: range === '0-100' ? '#00C951' : range === '101-500' ? '#00A843' : range === '501-1000' ? '#008735' : '#006627'
+    color: range === '0-100' ? '#FD1D1D' : range === '101-500' ? '#FF6B35' : range === '501-1000' ? '#F7931E' : '#FFA500'
   }))
 
   return (
@@ -32,7 +32,7 @@ export default function ViewDistributionChart({ viewDistribution }: ViewDistribu
                 color: '#f9fafb'
               }}
             />
-            <Bar dataKey="count" fill="#00C951" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="count" fill="#FD1D1D" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
