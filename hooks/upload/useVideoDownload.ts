@@ -65,7 +65,7 @@ export default function useVideoDownload() {
       formData.append('video_url', videoUrl)
 
       const response = await axios.post(
-        'http://localhost:8000/videos/download',
+        'http://saas-backend.duckdns.org/videos/download',
         formData,
         { 
           headers: {

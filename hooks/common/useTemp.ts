@@ -3,7 +3,7 @@ import axios from 'axios'
 import useAuth from '../auth/useAuth'
 import { useToast } from './useToast'
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'http://saas-backend.duckdns.org'
 
 export interface YouTubeToken {
   refresh_token: string;
@@ -57,7 +57,7 @@ export default function useTemp() {
     setIsLoading(true)
     try {
       const headers = getAuthHeaders()
-      const url = `/youtube/${userId}`
+      const url = `/youtube/status`
       console.log('[YouTube][GET Token] Request', {
         userId,
         url: `${API_BASE_URL}${url}`,
@@ -105,7 +105,7 @@ export default function useTemp() {
     setIsLoading(true)
     try {
       const headers = getAuthHeaders()
-      const url = `/youtube/${userId}/refreshed`
+      const url = `/youtube/status`
       console.log('[YouTube][Refresh Token] Request', {
         userId,
         url: `${API_BASE_URL}${url}`,

@@ -36,7 +36,7 @@ export default function usePrivacyStatus() {
       console.log(`[Privacy Status] Updating video ${videoId} to ${privacyStatus}`)
       
       const response = await axios.post(
-        `http://localhost:8000/privacy-status/${videoId}/privacy-status`,
+        `http://saas-backend.duckdns.org/privacy-status/${videoId}/privacy-status`,
         { privacy_status: privacyStatus },
         { headers }
       )

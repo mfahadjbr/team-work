@@ -26,7 +26,7 @@ export interface YouTubeCredentialsState {
   lastChecked: number | null
 }
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'http://saas-backend.duckdns.org'
 
 // Create axios instance for YouTube credentials API calls
 const credentialsApi = axios.create({
@@ -125,7 +125,7 @@ export default function useYouTubeCredentials() {
 
     try {
       const headers = getAuthHeaders()
-      const url = `/youtube/${userId}`
+      const url = `/youtube/status`
       
       console.log('[YouTube][Check Credentials] Request', {
         userId,
@@ -138,22 +138,18 @@ export default function useYouTubeCredentials() {
       console.log('[YouTube][Check Credentials] Response', {
         status: response.status,
         hasCredentials: !!response.data,
-        credentialsKeys: response.data ? Object.keys(response.data) : [],
-        access_token_preview: maskToken(response.data?.access_token),
-        refresh_token_preview: maskToken(response.data?.refresh_token),
-        expires_in: response.data?.expires_in,
-        expires_at: response.data?.expires_at,
-        token_type: response.data?.token_type,
-        scope_length: response.data?.scope?.length || 0,
+        responseStatus: response.data?.status,
+        message: response.data?.message,
+        hasAccessTo: response.data?.has_access_to,
       })
 
       // Since backend handles token refresh automatically, just check if token exists
-      const hasValidToken = !!response.data && !!response.data.access_token
+      const hasValidToken = !!response.data && response.data.status === 'valid'
       
       console.log('[YouTube][Check Credentials] Token Status', {
         hasData: !!response.data,
-        hasAccessToken: !!response.data?.access_token,
-        expires_at: response.data?.expires_at,
+        status: response.data?.status,
+        message: response.data?.message,
         willSetHasCredentials: hasValidToken,
       })
       

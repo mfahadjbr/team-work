@@ -15,7 +15,7 @@ const usePlaylistAnalytics = (playlistId: string) => {
       const token = localStorage.getItem('auth_token') 
 
       const response = await fetch(
-        `http://localhost:8000/dashboard/playlists/${playlistId}/comprehensive?refresh=${refresh}`,
+        `http://saas-backend.duckdns.org/dashboard/playlists/${playlistId}/comprehensive?refresh=${refresh}`,
         {
           headers: {
             Accept: "application/json",

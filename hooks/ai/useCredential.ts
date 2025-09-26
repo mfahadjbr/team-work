@@ -31,7 +31,7 @@ export interface YouTubeTokenState {
   token: YouTubeToken | null
 }
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'http://saas-backend.duckdns.org'
 
 // Create axios instance for YouTube API calls
 const youtubeApi = axios.create({
@@ -250,7 +250,7 @@ export default function useCredential() {
 
     try {
       const headers = getAuthHeaders()
-      const url = `/youtube/${userId}`
+      const url = `/youtube/status`
       console.log('[YouTube][GET Token] Request', {
         userId,
         url: `${API_BASE_URL}${url}`,
@@ -319,7 +319,7 @@ export default function useCredential() {
 
     try {
       const headers = getAuthHeaders()
-      const url = `/youtube/${userId}/refreshed`
+      const url = `/youtube/status`
       console.log('[YouTube][Refresh Token] Request', {
         userId,
         url: `${API_BASE_URL}${url}`,

@@ -32,7 +32,7 @@ export default function useCreateYouTubeCredentials() {
       })
 
       const response = await axios.post<CreateCredentialsResponse>(
-        'http://127.0.0.1:8000/youtube-credentials/',
+        'http://saas-backend.duckdns.org/youtube-credentials/',
         data,
         { headers }
       )
